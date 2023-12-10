@@ -19,8 +19,8 @@ public class SecurityConfig {
                             auth.requestMatchers("users/hello/**").permitAll();
                         }
                 )
-                .oauth2Login(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+//                .oauth2Login(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
                 .build();
     }
 }
