@@ -1,5 +1,6 @@
 package com.parking.JustPark.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,19 +12,28 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.authentication.AuthenticationManager;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                            auth.requestMatchers("auth/**").permitAll();
-                            auth.requestMatchers("users/hello/**").permitAll();
-                            auth.requestMatchers("users/secured/**").authenticated();
+                            auth.requestMatchers("/auth/**").permitAll();
+                            auth.anyRequest().authenticated();
                         }
                 )
 //                .oauth2Login(Customizer.withDefaults())
@@ -38,13 +48,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public JwtGenerator jwtGenerator() {
-        return new JwtGenerator();
     }
 
 }

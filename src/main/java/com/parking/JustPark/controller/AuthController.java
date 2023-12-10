@@ -1,7 +1,5 @@
 package com.parking.JustPark.controller;
 
-import com.parking.JustPark.config.JwtGenerator;
-import com.parking.JustPark.dto.AuthResponseDto;
 import com.parking.JustPark.dto.LoginDto;
 import com.parking.JustPark.dto.RegisterDto;
 import com.parking.JustPark.entity.Role;
@@ -31,49 +29,40 @@ public class AuthController {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtGenerator jwtGenerator;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserRepository userRepository,
-                          RoleRepository roleRepository,
-                          PasswordEncoder passwordEncoder,
-                          JwtGenerator jwtGenerator) {
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
+                          RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getEmail(),
-                        loginDto.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String token = jwtGenerator.generateToken(authentication);
-//        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
-        return new ResponseEntity<>("Login success!", HttpStatus.OK);
+        return new ResponseEntity<>("User signed in successfully!", HttpStatus.OK);
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        if (userRepository.existsByEmail(registerDto.getEmail())){
-            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+        if (userRepository.existsByEmail(registerDto.getEmail())) {
+            return new ResponseEntity<>("Email is taken!", HttpStatus.BAD_REQUEST);
         }
 
         UserEntity user = new UserEntity();
         user.setEmail(registerDto.getEmail());
-        user.setPassword(registerDto.getPassword());
+        user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
+
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singletonList(roles));
+
         userRepository.save(user);
 
         return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
-
-        //TODO розібратись з jwt токенами
     }
 }
