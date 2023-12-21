@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Клас UserEntity репрезентує користувача - власника автопаркінгу
+ */
+
 @Entity
 @Table(name = "users")
 @Data
@@ -24,4 +28,7 @@ public class UserEntity {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
+
+    //TODO
+    // Add all fields
 }

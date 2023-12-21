@@ -66,6 +66,9 @@ public class AuthController {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singletonList(roles));
 
+        //TODO:
+        // add all fields
+
         userRepository.save(user);
 
         return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
