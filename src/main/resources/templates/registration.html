@@ -9,7 +9,11 @@
 <form action="/registration" method="post" th:action="@{/registration}">
     Email: <input type="email" name="email" th:name="email"><br><br>
     Phone number: <input type="text" name="numberPhone" th:name="phoneNumber"><br><br>
-    Password <input type="password" name="password" th:name="password"><br><br>
+    Password: <input type="password" name="password" th:name="password"><br><br>
+    Firstname: <input type="text" name="firstName" th:name="firstName"><br><br>
+    Lastname: <input type="text" name="lastName" th:name="lastName"><br><br>
+    Date of birth: <input type="date" name="dateOfBirth" th:name="dateOfBirth"><br><br>
+    Country: <input type="text" name="country" th:name="country"><br><br>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Register"/>
 </form>

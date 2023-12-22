@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -24,11 +25,6 @@ public class User implements UserDetails {
 
     private String email;
     private String password;
-
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-//    private List<Role> roles = new ArrayList<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles",
@@ -49,10 +45,10 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private java.sql.Date dateOfBirth;
 
     @Column(name = "registration_date")
-    private Date registrationDate;
+    private LocalDate registrationDate;
 
     private String country;
 
@@ -89,4 +85,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
