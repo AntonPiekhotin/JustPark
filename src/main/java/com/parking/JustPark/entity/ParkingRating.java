@@ -21,5 +21,4 @@ public class ParkingRating {
     private Customer customer;
 
     private int rating;
-
 }
