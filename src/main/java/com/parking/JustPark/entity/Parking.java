@@ -22,6 +22,9 @@ public class Parking {
     @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParkingLot> parkingLots = new ArrayList<>();
 
+    @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ParkingRating> ratings = new ArrayList<>();
+
     private String title;
     private String address;
 
