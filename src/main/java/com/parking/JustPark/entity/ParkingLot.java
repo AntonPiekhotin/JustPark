@@ -9,6 +9,7 @@ import lombok.Data;
 public class ParkingLot {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -23,7 +24,7 @@ public class ParkingLot {
     @Column(name = "is_vip")
     private Boolean isVip;
 
-    //TODO
-    // add takenByCustomer field
-
+    @OneToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer takenBy;
 }
