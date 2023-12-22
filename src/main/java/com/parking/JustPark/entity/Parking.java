@@ -1,6 +1,7 @@
 package com.parking.JustPark.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Parking {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private UserEntity owner;
+    private User owner;
 
     @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParkingLot> parkingLots = new ArrayList<>();

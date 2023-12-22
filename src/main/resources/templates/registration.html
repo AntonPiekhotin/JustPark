@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<h1>Registration</h1>
+<h3 th:if="${errorMessage}" th:text="${errorMessage}"></h3>
+<form action="/registration" method="post" th:action="@{/registration}">
+    Email: <input type="email" name="email" th:name="email"><br><br>
+    Phone number: <input type="text" name="numberPhone" th:name="phoneNumber"><br><br>
+    Password <input type="password" name="password" th:name="password"><br><br>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Register"/>
+</form>
+</body>
+</html>
