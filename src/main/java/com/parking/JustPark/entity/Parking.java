@@ -28,6 +28,7 @@ public class Parking {
 
     private String title;
     private String address;
+    private String city;
 
     @Column(name = "price_default")
     private double priceDefault;

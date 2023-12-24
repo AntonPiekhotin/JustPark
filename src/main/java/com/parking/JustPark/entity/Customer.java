@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -29,13 +30,15 @@ public class Customer {
     private String name;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private java.sql.Date dateOfBirth;
 
     @Column(name = "registration_date")
-    private Date registrationDate;
+    private LocalDate registrationDate;
 
     private String country;
 
     @Column(name = "account_status")
     private String accountStatus;
+
+    private String city;
 }
