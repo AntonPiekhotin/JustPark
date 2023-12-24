@@ -24,7 +24,7 @@ public class ParkingRatingService {
 
     /**
      * Метод повертає всі оцінки по надаому паркінгу.
-     * @param parking паркінг, оцінки якого треба знайти.
+     * @param parkingId ідентифікатор паркінгу, оцінки якого треба знайти.
      * @return список оцінок.
      */
     public List<ParkingRating> listOfRatingsByParking(Long parkingId){
@@ -38,7 +38,7 @@ public class ParkingRatingService {
 
     /**
      * Метод підраховує рейтинг паркінгу шляхом знаходження середнього значення всіх оцінок цього паркінгу.
-     * @param parking паркінг, рейтинг якого треба обрахувати.
+     * @param parkingId ідентифікатор паркінгу, рейтинг якого треба обрахувати.
      * @return середнє значення всіх оцінок паркінгу.
      */
     public int getRatingByParking(Long parkingId) {
