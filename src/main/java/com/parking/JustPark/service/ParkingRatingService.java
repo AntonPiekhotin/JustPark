@@ -3,21 +3,23 @@ package com.parking.JustPark.service;
 import com.parking.JustPark.entity.Parking;
 import com.parking.JustPark.entity.ParkingRating;
 import com.parking.JustPark.repository.ParkingRatingRepository;
+import com.parking.JustPark.repository.ParkingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class ParkingRatingService {
     private final ParkingRatingRepository parkingRatingRepository;
+    private final ParkingRepository parkingRepository;
 
     @Autowired
-    public ParkingRatingService(ParkingRatingRepository parkingRatingRepository) {
+    public ParkingRatingService(ParkingRatingRepository parkingRatingRepository, ParkingRepository parkingRepository) {
         this.parkingRatingRepository = parkingRatingRepository;
+        this.parkingRepository = parkingRepository;
     }
 
     /**
@@ -25,10 +27,13 @@ public class ParkingRatingService {
      * @param parking паркінг, оцінки якого треба знайти.
      * @return список оцінок.
      */
-    public List<ParkingRating> listOfRatingsByParking(Parking parking){
-        if(parkingRatingRepository.existsByParking(parking))
-            return parkingRatingRepository.findAllByParking(parking);
-        return null;
+    public List<ParkingRating> listOfRatingsByParking(Long parkingId){
+        Parking parking = parkingRepository.findById(parkingId).orElse(null);
+        if(parking == null){
+            log.info("Error occurred while getting rating list in parking {}", parkingId);
+            return null;
+        }
+        return parkingRatingRepository.findAllByParking(parking);
     }
 
     /**
@@ -36,7 +41,12 @@ public class ParkingRatingService {
      * @param parking паркінг, рейтинг якого треба обрахувати.
      * @return середнє значення всіх оцінок паркінгу.
      */
-    public int getRatingByParking(Parking parking) {
+    public int getRatingByParking(Long parkingId) {
+        Parking parking = parkingRepository.findById(parkingId).orElse(null);
+        if(parking == null){
+            log.info("Error occurred while getting rating in parking {}", parkingId);
+            return -1;
+        }
         if (!parkingRatingRepository.existsByParking(parking)) {
             return 0;
         }
