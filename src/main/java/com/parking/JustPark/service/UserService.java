@@ -40,7 +40,7 @@ public class UserService {
         user.setRoles(Set.of(Role.USER));
 
         user.setRegistrationDate(LocalDate.now());
-        user.setAccountStatus(AccountStatus.ACTIVE.name());
+        user.setAccountStatus(AccountStatus.ACTIVE);
         log.info("Saving new User with email {}", email);
         userRepository.save(user);
         return true;

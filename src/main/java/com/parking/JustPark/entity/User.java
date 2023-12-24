@@ -1,5 +1,6 @@
 package com.parking.JustPark.entity;
 
+import com.parking.JustPark.entity.enums.AccountStatus;
 import com.parking.JustPark.entity.enums.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,8 +53,9 @@ public class User implements UserDetails {
 
     private String country;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_status")
-    private String accountStatus;
+    private AccountStatus accountStatus;
 
     //security
     @Override
