@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
-@RequestMapping("admin")
+@RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
 
@@ -56,21 +57,24 @@ public class AdminController {
     @GetMapping("/backup")
     public ResponseEntity<String> backupDB() {
         try {
-            String dbName = "JustPark";
-            String userName = "postgres";
-            String password = "postgres";
-            String backupPath = "C:\\JustPark";
-            String command = String.format("pg_dump --no-owner --dbname=postgresql://%s:%s@localhost:5432/%s > %s", userName, password, dbName, backupPath);
-            Process process = Runtime.getRuntime().exec(command);
+            String backupPath = "C:\\backup_" + LocalDateTime.now() + ".tar";
+            File directory = new File("C:\\JustPark\\" + backupPath);
+            if (!directory.exists())
+                directory.mkdirs();
 
-            int processComplete = process.waitFor();
-            if (processComplete == 0) {
-                return ResponseEntity.ok("Резервну копію створено!");
+            String command = "pg_dump -U postgres -h localhost -d JustPark -W -f " + backupPath;
+            Process process = Runtime.getRuntime().exec(command);
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                System.out.println("Бекап успішно створений.");
             } else {
-                return ResponseEntity.ok("При створенні резервної копії сталась помилка");
+                System.out.println("Помилка при створенні бекапу.");
             }
+            return ResponseEntity.ok("Бекап успішно створений.");
         } catch (IOException | InterruptedException e) {
-            return ResponseEntity.ok("При створенні резервної копії сталась помилка");
+            e.printStackTrace();
+            return ResponseEntity.ok("Помилка при створенні бекапу.");
         }
     }
 }

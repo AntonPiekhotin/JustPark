@@ -36,7 +36,7 @@ public class UserService {
         if (userRepository.findByEmail(email) != null)
             return false;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Set.of(Role.USER));
+        user.setRoles(Set.of(Role.ADMIN));
 
         user.setRegistrationDate(LocalDate.now());
         user.setAccountStatus(AccountStatus.ACTIVE);

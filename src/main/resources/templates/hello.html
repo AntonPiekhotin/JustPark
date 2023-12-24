@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Hello page</title>
 </head>
 <body>
 <h1>Hello</h1>
-<form action="/logout", method="post">
+<form action="/logout" method="post">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Logout">
+<!--    <div sec:authorize="${user.roles.contains('ADMIN')}">-->
+    <div th:if="${isAdmin}">
+        <a href="/admin">Адмінська панель</a>
+    </div>
 </form>
 </body>
 </html>

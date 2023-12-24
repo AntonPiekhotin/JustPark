@@ -1,12 +1,15 @@
 package com.parking.JustPark.controller;
 
 import com.parking.JustPark.entity.User;
+import com.parking.JustPark.entity.enums.Role;
 import com.parking.JustPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -40,7 +43,10 @@ public class UserController {
     }
 
     @GetMapping("/hello")
-    public String helloWorld() {
+    public String helloWorld(Model model, Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        boolean isAdmin = user.getAuthorities().contains(Role.ADMIN);
+        model.addAttribute("isAdmin", isAdmin);
         return "hello";
     }
 
