@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Hello page</title>
+    <title>Main page</title>
 </head>
 <body>
-<h1>Hello</h1>
+<h1>Main</h1>
 <form action="/logout" method="post">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Logout">

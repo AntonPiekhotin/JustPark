@@ -34,15 +34,6 @@ public class ParkingService {
         return true;
     }
 
-    public List<Parking> parkingList(Long ownerId) {
-        User owner = userRepository.findById(ownerId).orElse(null);
-        if (owner == null) {
-            log.info("User with this id {} doesn`t exists", ownerId);
-            return null;
-        }
-        return parkingRepository.findAllByOwner(owner);
-    }
-
     public boolean deleteParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {

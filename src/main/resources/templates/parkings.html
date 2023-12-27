@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your parkings</title>
+</head>
+<body>
+<a href="createParking.html">Create new</a>
+<h2>Your parkings:</h2>
+<ul>
+    <li th:each="parking : ${parkingList}">
+        <span th:text="${parking.getTitle()}"></span>
+    </li>
+</ul>
+
+</body>
+</html>

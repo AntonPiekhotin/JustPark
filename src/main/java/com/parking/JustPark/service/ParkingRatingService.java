@@ -54,7 +54,6 @@ public class ParkingRatingService {
         List<Integer> ratingValues = ratings.stream()
                 .map(ParkingRating::getRating)
                 .toList();
-
         int finalRating = -1;
         if (!ratingValues.isEmpty()) {
             for (Integer ratingValue : ratingValues) {

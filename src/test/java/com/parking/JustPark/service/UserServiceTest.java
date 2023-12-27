@@ -2,6 +2,7 @@ package com.parking.JustPark.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.when;
 import com.parking.JustPark.entity.Parking;
 import com.parking.JustPark.entity.User;
 import com.parking.JustPark.entity.enums.AccountStatus;
+import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
 import com.sun.security.auth.UserPrincipal;
 
@@ -36,7 +38,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {UserService.class})
 @ExtendWith(SpringExtension.class)
-class UserServiceDiffblueTest {
+class UserServiceTest {
+    @MockBean
+    private ParkingRepository parkingRepository;
+
     @MockBean
     private PasswordEncoder passwordEncoder;
 
@@ -96,13 +101,13 @@ class UserServiceDiffblueTest {
     void testGetAllUsers() {
         // Arrange
         ArrayList<User> userList = new ArrayList<>();
-        when(userRepository.findAll()).thenReturn(userList);
+        when(userRepository.findAllByOrderById()).thenReturn(userList);
 
         // Act
         List<User> actualAllUsers = userService.getAllUsers();
 
         // Assert
-        verify(userRepository).findAll();
+        verify(userRepository).findAllByOrderById();
         assertTrue(actualAllUsers.isEmpty());
         assertSame(userList, actualAllUsers);
     }
@@ -135,6 +140,57 @@ class UserServiceDiffblueTest {
         // Assert
         verify(userRepository).findById(Mockito.<Long>any());
         assertSame(user, actualUserById);
+    }
+
+    /**
+     * Method under test: {@link UserService#parkingList(Long)}
+     */
+    @Test
+    void testParkingList() {
+        // Arrange
+        User user = new User();
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        user.setCountry("GB");
+        user.setDateOfBirth(mock(Date.class));
+        user.setEmail("jane.doe@example.org");
+        user.setFirstName("Jane");
+        user.setId(1L);
+        user.setLastName("Doe");
+        user.setParkingList(new ArrayList<>());
+        user.setPassword("iloveyou");
+        user.setPhoneNumber("6625550144");
+        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user.setRoles(new HashSet<>());
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+        ArrayList<Parking> parkingList = new ArrayList<>();
+        when(parkingRepository.findAllByOwner(Mockito.<User>any())).thenReturn(parkingList);
+
+        // Act
+        List<Parking> actualParkingListResult = userService.parkingList(1L);
+
+        // Assert
+        verify(parkingRepository).findAllByOwner(Mockito.<User>any());
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertTrue(actualParkingListResult.isEmpty());
+        assertSame(parkingList, actualParkingListResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#parkingList(Long)}
+     */
+    @Test
+    void testParkingList2() {
+        // Arrange
+        Optional<User> emptyResult = Optional.empty();
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
+
+        // Act
+        List<Parking> actualParkingListResult = userService.parkingList(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertNull(actualParkingListResult);
     }
 
     /**
@@ -558,6 +614,21 @@ class UserServiceDiffblueTest {
         user.setRegistrationDate(LocalDate.of(1970, 1, 1));
         user.setRoles(new HashSet<>());
         Optional<User> ofResult = Optional.of(user);
+
+        User user2 = new User();
+        user2.setAccountStatus(AccountStatus.ACTIVE);
+        user2.setCountry("GB");
+        user2.setDateOfBirth(mock(Date.class));
+        user2.setEmail("jane.doe@example.org");
+        user2.setFirstName("Jane");
+        user2.setId(1L);
+        user2.setLastName("Doe");
+        user2.setParkingList(new ArrayList<>());
+        user2.setPassword("iloveyou");
+        user2.setPhoneNumber("6625550144");
+        user2.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user2.setRoles(new HashSet<>());
+        when(userRepository.save(Mockito.<User>any())).thenReturn(user2);
         when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
 
         // Act
@@ -565,6 +636,7 @@ class UserServiceDiffblueTest {
 
         // Assert
         verify(userRepository).findById(Mockito.<Long>any());
+        verify(userRepository).save(Mockito.<User>any());
     }
 
     /**
@@ -621,7 +693,7 @@ class UserServiceDiffblueTest {
         when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
 
         HashMap<String, String> roles = new HashMap<>();
-        roles.put("Error occurred while editing roles of user {}", "Error occurred while editing roles of user {}");
+        roles.put("Roles edited on user {}", "Roles edited on user {}");
 
         // Act
         userService.changeUserRoles(1L, roles);
@@ -672,5 +744,191 @@ class UserServiceDiffblueTest {
         // Assert
         verify(userRepository).save(Mockito.<User>any());
         assertTrue(actualEditUserResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#banUser(Long)}
+     */
+    @Test
+    void testBanUser() {
+        // Arrange
+        User user = new User();
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        user.setCountry("GB");
+        user.setDateOfBirth(mock(Date.class));
+        user.setEmail("jane.doe@example.org");
+        user.setFirstName("Jane");
+        user.setId(1L);
+        user.setLastName("Doe");
+        user.setParkingList(new ArrayList<>());
+        user.setPassword("iloveyou");
+        user.setPhoneNumber("6625550144");
+        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user.setRoles(new HashSet<>());
+        Optional<User> ofResult = Optional.of(user);
+
+        User user2 = new User();
+        user2.setAccountStatus(AccountStatus.ACTIVE);
+        user2.setCountry("GB");
+        user2.setDateOfBirth(mock(Date.class));
+        user2.setEmail("jane.doe@example.org");
+        user2.setFirstName("Jane");
+        user2.setId(1L);
+        user2.setLastName("Doe");
+        user2.setParkingList(new ArrayList<>());
+        user2.setPassword("iloveyou");
+        user2.setPhoneNumber("6625550144");
+        user2.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user2.setRoles(new HashSet<>());
+        when(userRepository.save(Mockito.<User>any())).thenReturn(user2);
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
+        // Act
+        boolean actualBanUserResult = userService.banUser(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        verify(userRepository).save(Mockito.<User>any());
+        assertTrue(actualBanUserResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#banUser(Long)}
+     */
+    @Test
+    void testBanUser2() {
+        // Arrange
+        User user = new User();
+        user.setAccountStatus(AccountStatus.BANNED);
+        user.setCountry("GB");
+        user.setDateOfBirth(mock(Date.class));
+        user.setEmail("jane.doe@example.org");
+        user.setFirstName("Jane");
+        user.setId(1L);
+        user.setLastName("Doe");
+        user.setParkingList(new ArrayList<>());
+        user.setPassword("iloveyou");
+        user.setPhoneNumber("6625550144");
+        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user.setRoles(new HashSet<>());
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
+        // Act
+        boolean actualBanUserResult = userService.banUser(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertFalse(actualBanUserResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#banUser(Long)}
+     */
+    @Test
+    void testBanUser3() {
+        // Arrange
+        Optional<User> emptyResult = Optional.empty();
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
+
+        // Act
+        boolean actualBanUserResult = userService.banUser(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertFalse(actualBanUserResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#unbanUser(Long)}
+     */
+    @Test
+    void testUnbanUser() {
+        // Arrange
+        User user = new User();
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        user.setCountry("GB");
+        user.setDateOfBirth(mock(Date.class));
+        user.setEmail("jane.doe@example.org");
+        user.setFirstName("Jane");
+        user.setId(1L);
+        user.setLastName("Doe");
+        user.setParkingList(new ArrayList<>());
+        user.setPassword("iloveyou");
+        user.setPhoneNumber("6625550144");
+        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user.setRoles(new HashSet<>());
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
+        // Act
+        boolean actualUnbanUserResult = userService.unbanUser(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertFalse(actualUnbanUserResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#unbanUser(Long)}
+     */
+    @Test
+    void testUnbanUser2() {
+        // Arrange
+        User user = new User();
+        user.setAccountStatus(AccountStatus.BANNED);
+        user.setCountry("GB");
+        user.setDateOfBirth(mock(Date.class));
+        user.setEmail("jane.doe@example.org");
+        user.setFirstName("Jane");
+        user.setId(1L);
+        user.setLastName("Doe");
+        user.setParkingList(new ArrayList<>());
+        user.setPassword("iloveyou");
+        user.setPhoneNumber("6625550144");
+        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user.setRoles(new HashSet<>());
+        Optional<User> ofResult = Optional.of(user);
+
+        User user2 = new User();
+        user2.setAccountStatus(AccountStatus.ACTIVE);
+        user2.setCountry("GB");
+        user2.setDateOfBirth(mock(Date.class));
+        user2.setEmail("jane.doe@example.org");
+        user2.setFirstName("Jane");
+        user2.setId(1L);
+        user2.setLastName("Doe");
+        user2.setParkingList(new ArrayList<>());
+        user2.setPassword("iloveyou");
+        user2.setPhoneNumber("6625550144");
+        user2.setRegistrationDate(LocalDate.of(1970, 1, 1));
+        user2.setRoles(new HashSet<>());
+        when(userRepository.save(Mockito.<User>any())).thenReturn(user2);
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
+        // Act
+        boolean actualUnbanUserResult = userService.unbanUser(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        verify(userRepository).save(Mockito.<User>any());
+        assertTrue(actualUnbanUserResult);
+    }
+
+    /**
+     * Method under test: {@link UserService#unbanUser(Long)}
+     */
+    @Test
+    void testUnbanUser3() {
+        // Arrange
+        Optional<User> emptyResult = Optional.empty();
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
+
+        // Act
+        boolean actualUnbanUserResult = userService.unbanUser(1L);
+
+        // Assert
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertFalse(actualUnbanUserResult);
     }
 }

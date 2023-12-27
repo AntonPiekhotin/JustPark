@@ -49,9 +49,30 @@ public class AdminController {
     }
 
     @PostMapping("/user/edit/{id}")
-    public String userEdit(@PathVariable("id") Long id, @RequestParam Map<String, String> roles) {
+    public String userEditRoles(@PathVariable("id") Long id, @RequestParam Map<String, String> roles) {
         userService.changeUserRoles(id, roles);
         return "redirect:/admin";
+    }
+
+    @PostMapping("/user/ban/{id}")
+    public String banUser(@PathVariable("id") Long id) {
+        if (userService.banUser(id))
+            return "redirect:/admin";
+        return "Сталась помилка при блокуванні користувача.";
+    }
+
+    @PostMapping("/user/unban/{id}")
+    public String unbanUser(@PathVariable("id") Long id) {
+        if (userService.unbanUser(id))
+            return "redirect:/admin";
+        return "Сталась помилка при розблокуванні користувача.";
+    }
+
+    @PostMapping("/user/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        if (userService.deleteUser(id))
+            return "redirect:/admin";
+        return "Сталась помилка";
     }
 
     @GetMapping("/backup")
@@ -62,7 +83,7 @@ public class AdminController {
             if (!directory.exists())
                 directory.mkdirs();
 
-            String command = "pg_dump -U postgres -h localhost -d JustPark -W -f " + backupPath;
+            String command = "pg_dump -U postgres -h localhost -d JustPark -W";
             Process process = Runtime.getRuntime().exec(command);
             int exitCode = process.waitFor();
 

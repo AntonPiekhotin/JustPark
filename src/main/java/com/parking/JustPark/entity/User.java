@@ -57,7 +57,6 @@ public class User implements UserDetails {
     @Column(name = "account_status")
     private AccountStatus accountStatus;
 
-    //security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

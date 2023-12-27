@@ -1,5 +1,6 @@
 package com.parking.JustPark.controller;
 
+import com.parking.JustPark.entity.Parking;
 import com.parking.JustPark.entity.User;
 import com.parking.JustPark.entity.enums.Role;
 import com.parking.JustPark.service.UserService;
@@ -7,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -42,12 +45,24 @@ public class UserController {
         return "redirect:login";
     }
 
-    @GetMapping("/hello")
+    @GetMapping
     public String helloWorld(Model model, Principal principal) {
         User user = userService.getUserByPrincipal(principal);
         boolean isAdmin = user.getAuthorities().contains(Role.ADMIN);
         model.addAttribute("isAdmin", isAdmin);
-        return "hello";
+        return "index";
+    }
+
+    @GetMapping("/parkings/{userId}")
+    public String getParkingListByUser(@PathVariable("userId") long userId, Model model) {
+        List<Parking> parkingList = userService.parkingList(userId);
+        model.addAttribute("parkingList", parkingList);
+        return "parkings";
+    }
+
+    @GetMapping("/parkings/create")
+    public String createParking() {
+        return "createParking";
     }
 
 }

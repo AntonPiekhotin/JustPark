@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагування ролей</title>
+</head>
+<body>
+<h2>Редагування ролей</h2>
+
+<form th:action="@{'/admin/user/edit/' + ${userToEdit.id}}" method="post">
+    <div th:each="role : ${roles}">
+        <label>
+            <input type="checkbox" th:name="${role}" th:checked="${userToEdit.roles.contains(role)}"/>
+            <span th:text="${role} "></span>
+        </label>
+    </div>
+    <input type="hidden" th:value="${user.id}" name="userId"/>
+    <input type="hidden" th:value="${_csrf.token}" name="_csrf"/>
+    <button type="submit">Зберегти</button>
+</form>
+
+</body>
+</html>

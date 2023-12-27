@@ -33,7 +33,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {ParkingRatingService.class})
 @ExtendWith(SpringExtension.class)
-class ParkingRatingServiceDiffblueTest {
+class ParkingRatingServiceTest {
     @MockBean
     private ParkingRatingRepository parkingRatingRepository;
 

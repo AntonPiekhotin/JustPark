@@ -11,5 +11,52 @@
     <button type="submit">Резервна копія</button>
 </form>
 
+<h4>Користувачі системи: </h4>
+<table border="1">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>Ел. пошта</th>
+        <th>Ролі</th>
+        <th>Номер телефону</th>
+        <th>Ім'я</th>
+        <th>Прізвище</th>
+        <th>Дата народження</th>
+        <th>Дата реєстрації</th>
+        <th>Країна</th>
+        <th>Статус</th>
+        <th>Редагувати</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${usersList}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td><span th:each="role : ${user.roles}" th:text="${role}"></span></td>
+        <td th:text="${user.getPhoneNumber()}"></td>
+        <td th:text="${user.getFirstName()}"></td>
+        <td th:text="${user.getLastName()}"></td>
+        <td th:text="${user.getDateOfBirth()}"></td>
+        <td th:text="${user.getRegistrationDate()}"></td>
+        <td th:text="${user.getCountry()}"></td>
+        <td th:text="${user.getAccountStatus()}"></td>
+        <td><a th:href="@{/admin/user/edit/{userId}(userId=${user.getId()})}">Редагування</a></td>
+        <td><form th:action="@{'/admin/user/delete/' + ${user.getId()}}" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="submit" value="Видалити">
+        </form></td>
+        <td><form th:action="@{'/admin/user/ban/' + ${user.getId()}}" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="submit" value="Бан">
+        </form></td>
+        <td th:if="${user.getAccountStatus().name().equals('BANNED')}"><form th:action="@{'/admin/user/unban/' + ${user.getId()}}" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="submit" value="Розблокувати">
+        </form></td>
+
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

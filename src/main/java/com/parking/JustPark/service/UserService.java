@@ -1,9 +1,11 @@
 package com.parking.JustPark.service;
 
 
+import com.parking.JustPark.entity.Parking;
 import com.parking.JustPark.entity.User;
 import com.parking.JustPark.entity.enums.AccountStatus;
 import com.parking.JustPark.entity.enums.Role;
+import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,13 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ParkingRepository parkingRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ParkingRepository parkingRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.parkingRepository = parkingRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -36,7 +40,7 @@ public class UserService {
         if (userRepository.findByEmail(email) != null)
             return false;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Set.of(Role.ADMIN));
+        user.setRoles(Set.of(Role.USER));
 
         user.setRegistrationDate(LocalDate.now());
         user.setAccountStatus(AccountStatus.ACTIVE);
@@ -46,11 +50,20 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderById();
     }
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public List<Parking> parkingList(Long ownerId) {
+        User owner = userRepository.findById(ownerId).orElse(null);
+        if (owner == null) {
+            log.info("User with this id {} doesn`t exists", ownerId);
+            return null;
+        }
+        return parkingRepository.findAllByOwner(owner);
     }
 
     public boolean editStatus(Long userId, AccountStatus newStatus) {
@@ -126,10 +139,10 @@ public class UserService {
             for (String key : roles.keySet()) {
                 if (rolesSet.contains(key))
                     user.getRoles().add(Role.valueOf(key));
-                userRepository.save(user);
-                log.info("Roles edited on user {}", user.getId());
-                return;
             }
+            userRepository.save(user);
+            log.info("Roles edited on user {}", user.getId());
+            return;
         }
         log.info("Error occurred while editing roles of user {}", userId);
     }
@@ -142,5 +155,31 @@ public class UserService {
         }
         log.info("Error occurred while editing info in user {}, probably passed object is null", user.getId());
         return false;
+    }
+
+    public boolean banUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null || user.getAccountStatus() == AccountStatus.BANNED) {
+            log.info("Error occurred while baning user with id {}, probably id is wrong or user is already banned",
+                    userId);
+            return false;
+        }
+        user.setAccountStatus(AccountStatus.BANNED);
+        userRepository.save(user);
+        log.info("User {} has been banned", userId);
+        return true;
+    }
+
+    public boolean unbanUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null || user.getAccountStatus() != AccountStatus.BANNED) {
+            log.info("Error occurred while baning user with id {}, probably id is wrong or user is not banned",
+                    userId);
+            return false;
+        }
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        userRepository.save(user);
+        log.info("User {} has been unbanned", userId);
+        return true;
     }
 }

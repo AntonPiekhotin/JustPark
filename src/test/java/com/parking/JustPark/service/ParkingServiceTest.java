@@ -1,7 +1,6 @@
 package com.parking.JustPark.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
@@ -19,7 +18,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {ParkingService.class})
 @ExtendWith(SpringExtension.class)
-class ParkingServiceDiffblueTest {
+class ParkingServiceTest {
     @MockBean
     private ParkingRepository parkingRepository;
 
@@ -165,58 +163,6 @@ class ParkingServiceDiffblueTest {
         // Assert
         verify(userRepository).findById(Mockito.<Long>any());
         assertFalse(actualCreateParkingResult);
-    }
-
-    /**
-     * Method under test: {@link ParkingService#parkingList(Long)}
-     */
-    @Test
-    void testParkingList() {
-        // Arrange
-        ArrayList<Parking> parkingList = new ArrayList<>();
-        when(parkingRepository.findAllByOwner(Mockito.<User>any())).thenReturn(parkingList);
-
-        User user = new User();
-        user.setAccountStatus(AccountStatus.ACTIVE);
-        user.setCountry("GB");
-        user.setDateOfBirth(mock(Date.class));
-        user.setEmail("jane.doe@example.org");
-        user.setFirstName("Jane");
-        user.setId(1L);
-        user.setLastName("Doe");
-        user.setParkingList(new ArrayList<>());
-        user.setPassword("iloveyou");
-        user.setPhoneNumber("6625550144");
-        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
-        user.setRoles(new HashSet<>());
-        Optional<User> ofResult = Optional.of(user);
-        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-
-        // Act
-        List<Parking> actualParkingListResult = parkingService.parkingList(1L);
-
-        // Assert
-        verify(parkingRepository).findAllByOwner(Mockito.<User>any());
-        verify(userRepository).findById(Mockito.<Long>any());
-        assertTrue(actualParkingListResult.isEmpty());
-        assertSame(parkingList, actualParkingListResult);
-    }
-
-    /**
-     * Method under test: {@link ParkingService#parkingList(Long)}
-     */
-    @Test
-    void testParkingList2() {
-        // Arrange
-        Optional<User> emptyResult = Optional.empty();
-        when(userRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-
-        // Act
-        List<Parking> actualParkingListResult = parkingService.parkingList(1L);
-
-        // Assert
-        verify(userRepository).findById(Mockito.<Long>any());
-        assertNull(actualParkingListResult);
     }
 
     /**

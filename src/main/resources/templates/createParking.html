@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create parking</title>
+</head>
+<body>
+<h2>Create parking</h2>
+
+<form action="/" method="post" th:action="@{/registration}">
+    Email: <input type="email" name="email" th:name="email"><br><br>
+    <input type="submit" value="Register"/>
+</body>
+</html>
