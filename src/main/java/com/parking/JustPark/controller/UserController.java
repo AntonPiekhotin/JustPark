@@ -2,11 +2,13 @@ package com.parking.JustPark.controller;
 
 import com.parking.JustPark.entity.Parking;
 import com.parking.JustPark.entity.User;
+import com.parking.JustPark.service.ParkingService;
 import com.parking.JustPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -17,10 +19,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ParkingService parkingService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ParkingService parkingService) {
         this.userService = userService;
+        this.parkingService = parkingService;
     }
 
     @GetMapping("/login")
@@ -64,8 +68,18 @@ public class UserController {
     public String createParking(@PathVariable long userId, Model model, Principal principal) {
 //        User user = userService.getUserById(userId);
         User user = userService.getUserByPrincipal(principal);
+        Parking parking = new Parking();
+        model.addAttribute("parking", parking);
         model.addAttribute("currentUser", user);
         return "createParking";
+    }
+
+    @PostMapping("/parkings/create/{userId}")
+    public String createParking(@ModelAttribute("parking") Parking parking, @PathVariable("userId") Long userId, Principal principal, Model model) {
+        User user = userService.getUserById(userId);
+        model.addAttribute("currentUser", user);
+        parkingService.createParking(parking, user.getId());
+        return "redirect:/parkings/" + userId;
     }
 
 }
