@@ -7,20 +7,20 @@
 </head>
 <body>
 <div th:replace="header :: header"></div>
-<button class="btn btn-primary ms-2 mt-2" th:href="@{create/{userId}(userId=${currentUser.getId()})}">Create new</button>
+<button class="btn btn-primary ms-2 mt-2" th:href="@{create/{userId}(userId=${currentUser.getId()})}">Create new
+</button>
 <h2>Your parkings:</h2>
 <div class="container d-flex justify-content-center">
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>
             <th>ID</th>
             <th>Назва</th>
             <th>Місто</th>
             <th>Адреса</th>
             <th>Ціна (за замовчуванням)</th>
             <th>Ціна (VIP)</th>
-            </th>
+            <th>Переглянути оцінки</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +31,7 @@
             <td th:text="${parking.address}"></td>
             <td th:text="${parking.priceDefault}"></td>
             <td th:text="${parking.priceVip}"></td>
+            <td><a th:href="@{/parkings/rating/{parkingId}(parkingId=${parking.id})}">Рейтинг</a></td>
         </tr>
         </tbody>
     </table>

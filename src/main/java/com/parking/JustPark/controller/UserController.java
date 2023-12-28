@@ -1,7 +1,9 @@
 package com.parking.JustPark.controller;
 
 import com.parking.JustPark.entity.Parking;
+import com.parking.JustPark.entity.ParkingRating;
 import com.parking.JustPark.entity.User;
+import com.parking.JustPark.service.ParkingRatingService;
 import com.parking.JustPark.service.ParkingService;
 import com.parking.JustPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,13 @@ public class UserController {
 
     private final UserService userService;
     private final ParkingService parkingService;
+    private final ParkingRatingService parkingRatingService;
 
     @Autowired
-    public UserController(UserService userService, ParkingService parkingService) {
+    public UserController(UserService userService, ParkingService parkingService, ParkingRatingService parkingRatingService) {
         this.userService = userService;
         this.parkingService = parkingService;
+        this.parkingRatingService = parkingRatingService;
     }
 
     @GetMapping("/login")
@@ -80,6 +84,18 @@ public class UserController {
         model.addAttribute("currentUser", user);
         parkingService.createParking(parking, user.getId());
         return "redirect:/parkings/" + userId;
+    }
+
+    @GetMapping("/parkings/rating/{parkingId}")
+    public String getParkingRates(@PathVariable Long parkingId, Model model, Principal principal){
+        int rating = parkingRatingService.getRatingByParking(parkingId);
+        List<ParkingRating> listOfRates = parkingRatingService.listOfRatingsByParking(parkingId);
+        model.addAttribute("rating", rating);
+        model.addAttribute("listOfRates", listOfRates);
+
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("currentUser", user);
+        return "parkingRating";
     }
 
 }

@@ -34,6 +34,10 @@ public class ParkingService {
         return true;
     }
 
+    public Parking getParkingById(Long parkingId) {
+        return parkingRepository.findById(parkingId).orElse(null);
+    }
+
     public boolean deleteParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
