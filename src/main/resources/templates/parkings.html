@@ -7,13 +7,35 @@
 </head>
 <body>
 <div th:replace="header :: header"></div>
-<a th:href="@{create/{userId}(userId=${currentUser.getId()})}">Create new</a>
+<button class="btn btn-primary ms-2 mt-2" th:href="@{create/{userId}(userId=${currentUser.getId()})}">Create new</button>
 <h2>Your parkings:</h2>
-<ul>
-    <li th:each="parking : ${parkingList}">
-        <span th:text="${parking.getTitle()}"></span>
-    </li>
-</ul>
+<div class="container d-flex justify-content-center">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Місто</th>
+            <th>Адреса</th>
+            <th>Ціна (за замовчуванням)</th>
+            <th>Ціна (VIP)</th>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="parking : ${parkingList}">
+            <td th:text="${parking.id}"></td>
+            <td th:text="${parking.title}"></td>
+            <td th:text="${parking.city}"></td>
+            <td th:text="${parking.address}"></td>
+            <td th:text="${parking.priceDefault}"></td>
+            <td th:text="${parking.priceVip}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <div th:replace="footer :: footer"></div>
 </body>
 </html>
