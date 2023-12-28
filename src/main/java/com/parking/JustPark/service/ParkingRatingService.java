@@ -24,12 +24,13 @@ public class ParkingRatingService {
 
     /**
      * Метод повертає всі оцінки по надаому паркінгу.
+     *
      * @param parkingId ідентифікатор паркінгу, оцінки якого треба знайти.
      * @return список оцінок.
      */
-    public List<ParkingRating> listOfRatingsByParking(Long parkingId){
+    public List<ParkingRating> listOfRatingsByParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
-        if(parking == null){
+        if (parking == null) {
             log.info("Error occurred while getting rating list in parking {}", parkingId);
             return null;
         }
@@ -38,12 +39,13 @@ public class ParkingRatingService {
 
     /**
      * Метод підраховує рейтинг паркінгу шляхом знаходження середнього значення всіх оцінок цього паркінгу.
+     *
      * @param parkingId ідентифікатор паркінгу, рейтинг якого треба обрахувати.
      * @return середнє значення всіх оцінок паркінгу.
      */
     public int getRatingByParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
-        if(parking == null){
+        if (parking == null) {
             log.info("Error occurred while getting rating in parking {}", parkingId);
             return -1;
         }
@@ -54,12 +56,12 @@ public class ParkingRatingService {
         List<Integer> ratingValues = ratings.stream()
                 .map(ParkingRating::getRating)
                 .toList();
-        int finalRating = -1;
+        int finalRating = 0;
         if (!ratingValues.isEmpty()) {
             for (Integer ratingValue : ratingValues) {
                 finalRating += ratingValue;
             }
         }
-        return finalRating;
+        return finalRating / ratingValues.size();
     }
 }

@@ -30,7 +30,7 @@ public class ParkingLotService {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking != null) {
             parkingLot.setParking(parking);
-            parkingLot.setIsEmpty(false);
+            parkingLot.setIsEmpty(true);
             parkingLotRepository.save(parkingLot);
             log.info("Created parking lot {} in parking {}", parkingLot.getId(), parking.getId());
             return true;

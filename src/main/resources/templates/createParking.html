@@ -8,33 +8,33 @@
 <body>
 <div th:replace="header :: header"></div>
 
-<div class="container d-flex justify-content-center">
-    <form th:action="@{/parkings/create/{userId}(userId=${currentUser.getId()})}" th:object="${parking}" method="post">
-        <h2>Create parking</h2>
-        <div class="mb-3">
-            <label for="title" class="form-label">Назва</label>
-            <input type="text" class="form-control" id="title" name="title" th:field="*{title}" required>
-        </div>
-        <div class="mb-3">
-            <label for="city" class="form-label">Місто</label>
-            <input type="text" class="form-control" id="city" name="city" th:field="*{city}" required>
-        </div>
-        <div class="mb-3">
-            <label for="address" class="form-label">Адреса</label>
-            <input type="text" class="form-control" id="address" name="address" th:field="*{address}" required>
-        </div>
-        <div class="mb-3">
-            <label for="priceDefault" class="form-label">Ціна (за замовчуванням)</label>
-            <input type="number" step="0.01" class="form-control" id="priceDefault" th:field="*{priceDefault}"
-                   name="priceDefault" required>
-        </div>
-        <div class="mb-3">
-            <label for="priceVip" class="form-label">Ціна (VIP)</label>
-            <input type="number" step="0.01" class="form-control" id="priceVip" th:field="*{priceVip}" name="priceVip"
-                   required>
-        </div>
-        <button type="submit" class="btn btn-primary">Додати об'єкт</button>
-    </form>
+    <div class="container d-flex justify-content-center">
+        <form th:action="@{/parkings/create/{userId}(userId=${currentUser.getId()})}" th:object="${parking}" method="post">
+            <h2>Create parking</h2>
+            <div class="mb-3">
+                <label for="title" class="form-label">Назва</label>
+                <input type="text" class="form-control" id="title" name="title" th:field="*{title}" required>
+            </div>
+            <div class="mb-3">
+                <label for="city" class="form-label">Місто</label>
+                <input type="text" class="form-control" id="city" name="city" th:field="*{city}" required>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Адреса</label>
+                <input type="text" class="form-control" id="address" name="address" th:field="*{address}" required>
+            </div>
+            <div class="mb-3">
+                <label for="priceDefault" class="form-label">Ціна (за замовчуванням)</label>
+                <input type="number" step="0.01" class="form-control" id="priceDefault" th:field="*{priceDefault}"
+                       name="priceDefault" required>
+            </div>
+            <div class="mb-3">
+                <label for="priceVip" class="form-label">Ціна (VIP)</label>
+                <input type="number" step="0.01" class="form-control" id="priceVip" th:field="*{priceVip}" name="priceVip"
+                       required>
+            </div>
+            <button type="submit" class="btn btn-primary">Додати об'єкт</button>
+        </form>
 
 </div>
 <div th:replace="footer :: footer"></div>

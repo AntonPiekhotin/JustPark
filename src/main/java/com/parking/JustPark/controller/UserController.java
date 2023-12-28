@@ -1,8 +1,10 @@
 package com.parking.JustPark.controller;
 
 import com.parking.JustPark.entity.Parking;
+import com.parking.JustPark.entity.ParkingLot;
 import com.parking.JustPark.entity.ParkingRating;
 import com.parking.JustPark.entity.User;
+import com.parking.JustPark.service.ParkingLotService;
 import com.parking.JustPark.service.ParkingRatingService;
 import com.parking.JustPark.service.ParkingService;
 import com.parking.JustPark.service.UserService;
@@ -23,12 +25,14 @@ public class UserController {
     private final UserService userService;
     private final ParkingService parkingService;
     private final ParkingRatingService parkingRatingService;
+    private final ParkingLotService parkingLotService;
 
     @Autowired
-    public UserController(UserService userService, ParkingService parkingService, ParkingRatingService parkingRatingService) {
+    public UserController(UserService userService, ParkingService parkingService, ParkingRatingService parkingRatingService, ParkingLotService parkingLotService) {
         this.userService = userService;
         this.parkingService = parkingService;
         this.parkingRatingService = parkingRatingService;
+        this.parkingLotService = parkingLotService;
     }
 
     @GetMapping("/login")
@@ -87,7 +91,7 @@ public class UserController {
     }
 
     @GetMapping("/parkings/rating/{parkingId}")
-    public String getParkingRates(@PathVariable Long parkingId, Model model, Principal principal){
+    public String getParkingRates(@PathVariable Long parkingId, Model model, Principal principal) {
         int rating = parkingRatingService.getRatingByParking(parkingId);
         List<ParkingRating> listOfRates = parkingRatingService.listOfRatingsByParking(parkingId);
         model.addAttribute("rating", rating);
@@ -96,6 +100,35 @@ public class UserController {
         User user = userService.getUserByPrincipal(principal);
         model.addAttribute("currentUser", user);
         return "parkingRating";
+    }
+
+    @GetMapping("parkings/lots/{parkingId}")
+    public String getParkingLots(@PathVariable Long parkingId, Model model, Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("currentUser", user);
+        List<ParkingLot> parkingLotList = parkingLotService.listByParking(parkingId);
+        model.addAttribute("parkingLotList", parkingLotList);
+        return "parkingLots";
+    }
+
+    @GetMapping("/parkings/lots/create/{parkingId}")
+    public String createParkingLot(@PathVariable Long parkingId, Model model, Principal principal) {
+        ParkingLot parkingLot = new ParkingLot();
+        model.addAttribute("parkingLot", parkingLot);
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("currentUser", user);
+        model.addAttribute("parkingId", parkingId);
+        return "createParkingLot";
+    }
+
+    @PostMapping("/parkings/lots/create/{parkingId}")
+    public String createParkingLot(@ModelAttribute("parkingLot") ParkingLot parkingLot,
+                                   @PathVariable Long parkingId, Model model, Principal principal) {
+
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("currentUser", user);
+        parkingLotService.createParkingLot(parkingLot, parkingId);
+        return "redirect:/parkings/lots/" + parkingId;
     }
 
 }
