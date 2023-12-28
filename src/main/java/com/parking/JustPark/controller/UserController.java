@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -44,19 +45,26 @@ public class UserController {
     }
 
     @GetMapping
-    public String helloWorld() {
+    public String mainPage(Model model, Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("currentUser", user);
         return "index";
     }
 
     @GetMapping("/parkings/{userId}")
     public String getParkingListByUser(@PathVariable("userId") long userId, Model model) {
         List<Parking> parkingList = userService.parkingList(userId);
+        User user = userService.getUserById(userId);
+        model.addAttribute("currentUser", user);
         model.addAttribute("parkingList", parkingList);
         return "parkings";
     }
 
-    @GetMapping("/parkings/create")
-    public String createParking() {
+    @GetMapping("/parkings/create/{userId}")
+    public String createParking(@PathVariable long userId, Model model, Principal principal) {
+//        User user = userService.getUserById(userId);
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("currentUser", user);
         return "createParking";
     }
 
