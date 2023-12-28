@@ -2,7 +2,6 @@ package com.parking.JustPark.controller;
 
 import com.parking.JustPark.entity.Parking;
 import com.parking.JustPark.entity.User;
-import com.parking.JustPark.entity.enums.Role;
 import com.parking.JustPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -46,10 +44,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String helloWorld(Model model, Principal principal) {
-        User user = userService.getUserByPrincipal(principal);
-        boolean isAdmin = user.getAuthorities().contains(Role.ADMIN);
-        model.addAttribute("isAdmin", isAdmin);
+    public String helloWorld() {
         return "index";
     }
 
