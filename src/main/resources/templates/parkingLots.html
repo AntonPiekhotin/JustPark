@@ -11,27 +11,28 @@
 <a class="btn btn-primary ms-2 mt-2" th:href="@{/parkings/lots/create/{parkingId}(parkingId=${parkingId})}">Створити</a>
 
 <h2 th:text="'Паркомісця в паркінгу ' + ${parkingId} + ':'"></h2>
-<div class="container d-flex justify-content-center">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Рівень</th>
-            <th>Вільне</th>
-            <th>VIP</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="parkingLot : ${parkingLotList}">
-            <td th:text="${parkingLot.id}"></td>
-            <td th:text="${parkingLot.layer}"></td>
-            <td th:text="${parkingLot.isEmpty}"></td>
-            <td th:text="${parkingLot.isVip}"></td>
-        </tr>
-        </tbody>
-    </table>
+<div class="d-flex flex-column min-vh-100">
+    <div class="container d-flex justify-content-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Рівень</th>
+                <th>Вільне</th>
+                <th>VIP</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="parkingLot : ${parkingLotList}">
+                <td th:text="${parkingLot.id}"></td>
+                <td th:text="${parkingLot.layer}"></td>
+                <td th:text="${parkingLot.isEmpty}"></td>
+                <td th:text="${parkingLot.isVip}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
 <div th:replace="footer :: footer"></div>
 </body>
 </html>

@@ -10,35 +10,36 @@
 <a class="btn btn-primary ms-2 mt-2" th:href="@{create/{userId}(userId=${currentUser.getId()})}">Створити</a>
 
 <h2>Ваші паркінги:</h2>
-<div class="container d-flex justify-content-center">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Назва</th>
-            <th>Місто</th>
-            <th>Адреса</th>
-            <th>Ціна (за замовчуванням)</th>
-            <th>Ціна (VIP)</th>
-            <th>Переглянути оцінки</th>
-            <th>Паркомісця</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="parking : ${parkingList}">
-            <td th:text="${parking.id}"></td>
-            <td th:text="${parking.title}"></td>
-            <td th:text="${parking.city}"></td>
-            <td th:text="${parking.address}"></td>
-            <td th:text="${parking.priceDefault}"></td>
-            <td th:text="${parking.priceVip}"></td>
-            <td><a th:href="@{/parkings/rating/{parkingId}(parkingId=${parking.id})}">Рейтинг</a></td>
-            <td><a th:href="@{/parkings/lots/{parkingId}(parkingId=${parking.id})}">Паркомісця</a></td>
-        </tr>
-        </tbody>
-    </table>
+<div class="d-flex flex-column min-vh-100">
+    <div class="container d-flex justify-content-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Назва</th>
+                <th>Місто</th>
+                <th>Адреса</th>
+                <th>Ціна (за замовчуванням)</th>
+                <th>Ціна (VIP)</th>
+                <th>Переглянути оцінки</th>
+                <th>Паркомісця</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="parking : ${parkingList}">
+                <td th:text="${parking.id}"></td>
+                <td th:text="${parking.title}"></td>
+                <td th:text="${parking.city}"></td>
+                <td th:text="${parking.address}"></td>
+                <td th:text="${parking.priceDefault}"></td>
+                <td th:text="${parking.priceVip}"></td>
+                <td><a th:href="@{/parkings/rating/{parkingId}(parkingId=${parking.id})}">Рейтинг</a></td>
+                <td><a th:href="@{/parkings/lots/{parkingId}(parkingId=${parking.id})}">Паркомісця</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
 <div th:replace="footer :: footer"></div>
 </body>
 </html>
