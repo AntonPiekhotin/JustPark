@@ -5,6 +5,7 @@ import com.parking.JustPark.entity.enums.Role;
 import com.parking.JustPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -77,25 +79,56 @@ public class AdminController {
 
     @GetMapping("/backup")
     public ResponseEntity<String> backupDB() {
+
+        String dbName = "JustPark";
+        String userName = "postgres";
+        String password = "postgres";
+        String backupPath = "C:\\backup_" +
+                LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE) + ".sql";
+        String pgDumpPath = "C:\\Program Files\\PostgreSQL\\16\\bin\\pg_dump.exe";
+
+        //Створюємо файл бекапу
+        File file = new File(backupPath);
         try {
-            String backupPath = "C:\\backup_" + LocalDateTime.now() + ".tar";
-            File directory = new File("C:\\JustPark\\" + backupPath);
-            if (!directory.exists())
-                directory.mkdirs();
-
-            String command = "pg_dump -U postgres -h localhost -d JustPark -W";
-            Process process = Runtime.getRuntime().exec(command);
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                System.out.println("Бекап успішно створений.");
+            if (file.createNewFile()) {
+                System.out.println("File created: " + file.getName());
             } else {
-                System.out.println("Помилка при створенні бекапу.");
+                System.out.println("File already exists.");
             }
-            return ResponseEntity.ok("Бекап успішно створений.");
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return ResponseEntity.ok("Помилка при створенні бекапу.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        ProcessBuilder processBuilder = new ProcessBuilder(
+                pgDumpPath,
+                "-h", "localhost",
+                "-p", "5432",
+                "-U", userName,
+                "-d", dbName,
+                "-F", "c",
+                "-b",
+                "-v",
+                "-f", backupPath
+        );
+
+        processBuilder.environment().put("PGPASSWORD", password);
+
+        Process process = null;
+        try {
+            process = processBuilder.start();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Очікуємо на завершення операції створення бекапу
+        try {
+            int exitCode = process.waitFor();
+            System.out.println("Backup completed with exit code: " + exitCode);
+            return ResponseEntity.ok("Бекап створено");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.badRequest().body("Помилка створення бекапу");
     }
 }
