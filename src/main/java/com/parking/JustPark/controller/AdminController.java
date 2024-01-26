@@ -77,6 +77,11 @@ public class AdminController {
         return "Сталась помилка";
     }
 
+    /**
+     * Функція створення резервної копії бази даних. Створює файл бекапу в корневій директорії диску C.
+     * @return http-response "OK" якщо резервна копія створена успішно, hhtp-response "bad request"
+     * якщо під час створення копії сталась помилка.
+     */
     @GetMapping("/backup")
     public ResponseEntity<String> backupDB() {
 

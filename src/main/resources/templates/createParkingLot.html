@@ -9,8 +9,9 @@
 <div th:replace="header :: header"></div>
 
 <div class="container d-flex justify-content-center">
-    <form th:action="@{/parkings/lots/create/{parkingId}(parkingId=${parkingId})}" th:object="${parkingLot}" method="post">
-        <h2>Create parking</h2>
+    <form th:action="@{/parkings/lots/create/{parkingId}(parkingId=${parkingId})}" th:object="${parkingLot}"
+          method="post">
+        <h2>Create parking lot</h2>
         <div class="mb-3">
             <label for="title" class="form-label">Поверх</label>
             <input type="number" class="form-control" id="title" name="layer" th:field="*{layer}" required>
@@ -22,7 +23,7 @@
 
         <button type="submit" class="btn btn-primary">Додати об'єкт</button>
     </form>
-
+</div>
 <div th:replace="footer :: footer"></div>
 </body>
 </html>
