@@ -1,6 +1,6 @@
 package com.parking.JustPark.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
