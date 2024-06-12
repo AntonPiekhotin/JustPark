@@ -1,0 +1,47 @@
+name: Trigger auto deployment for user-service
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '**'
+    - '.github/workflows/user-service-AutoDeployTrigger-929adc8c-5290-44bf-95ca-79c0c0d6352a.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.USERSERVICE_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.USERSERVICE_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.USERSERVICE_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: 
+          registryUsername: ${{ secrets.USERSERVICE_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.USERSERVICE_REGISTRY_PASSWORD }}
+          containerAppName: user-service
+          resourceGroup: nure-proj
+          imageToBuild: default/[parameters('containerAppName')]:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
