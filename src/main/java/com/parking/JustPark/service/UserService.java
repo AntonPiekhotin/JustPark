@@ -1,10 +1,10 @@
 package com.parking.JustPark.service;
 
 
-import com.parking.JustPark.entity.Parking;
-import com.parking.JustPark.entity.User;
-import com.parking.JustPark.entity.enums.AccountStatus;
-import com.parking.JustPark.entity.enums.Role;
+import com.parking.JustPark.model.entity.Parking;
+import com.parking.JustPark.model.entity.User;
+import com.parking.JustPark.model.constant.AccountStatus;
+import com.parking.JustPark.model.constant.Role;
 import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
-package com.parking.JustPark.entity;
+package com.parking.JustPark.model.entity;
 
-import com.parking.JustPark.entity.enums.AccountStatus;
-import com.parking.JustPark.entity.enums.Role;
+import com.parking.JustPark.model.constant.AccountStatus;
+import com.parking.JustPark.model.constant.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

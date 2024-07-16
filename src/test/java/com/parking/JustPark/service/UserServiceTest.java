@@ -10,9 +10,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.parking.JustPark.entity.Parking;
-import com.parking.JustPark.entity.User;
-import com.parking.JustPark.entity.enums.AccountStatus;
+import com.parking.JustPark.model.entity.Parking;
+import com.parking.JustPark.model.entity.User;
+import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
 import com.sun.security.auth.UserPrincipal;

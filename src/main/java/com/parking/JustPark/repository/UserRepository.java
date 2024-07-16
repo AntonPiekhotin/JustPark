@@ -1,6 +1,6 @@
 package com.parking.JustPark.repository;
 
-import com.parking.JustPark.entity.User;
+import com.parking.JustPark.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

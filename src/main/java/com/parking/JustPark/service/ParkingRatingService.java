@@ -1,7 +1,7 @@
 package com.parking.JustPark.service;
 
-import com.parking.JustPark.entity.Parking;
-import com.parking.JustPark.entity.ParkingRating;
+import com.parking.JustPark.model.entity.Parking;
+import com.parking.JustPark.model.entity.ParkingRating;
 import com.parking.JustPark.repository.ParkingRatingRepository;
 import com.parking.JustPark.repository.ParkingRepository;
 import lombok.extern.slf4j.Slf4j;

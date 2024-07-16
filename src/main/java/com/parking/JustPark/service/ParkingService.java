@@ -1,14 +1,12 @@
 package com.parking.JustPark.service;
 
-import com.parking.JustPark.entity.Parking;
-import com.parking.JustPark.entity.User;
+import com.parking.JustPark.model.entity.Parking;
+import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Slf4j

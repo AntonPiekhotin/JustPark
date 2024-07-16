@@ -1,4 +1,4 @@
-package com.parking.JustPark.entity.enums;
+package com.parking.JustPark.model.constant;
 
 import org.springframework.security.core.GrantedAuthority;
 

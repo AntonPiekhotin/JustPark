@@ -1,4 +1,4 @@
-package com.parking.JustPark.entity;
+package com.parking.JustPark.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

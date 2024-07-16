@@ -1,7 +1,7 @@
 package com.parking.JustPark.repository;
 
-import com.parking.JustPark.entity.Parking;
-import com.parking.JustPark.entity.ParkingLot;
+import com.parking.JustPark.model.entity.Parking;
+import com.parking.JustPark.model.entity.ParkingLot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

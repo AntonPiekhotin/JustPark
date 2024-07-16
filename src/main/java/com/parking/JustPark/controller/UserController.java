@@ -1,9 +1,9 @@
 package com.parking.JustPark.controller;
 
-import com.parking.JustPark.entity.Parking;
-import com.parking.JustPark.entity.ParkingLot;
-import com.parking.JustPark.entity.ParkingRating;
-import com.parking.JustPark.entity.User;
+import com.parking.JustPark.model.entity.Parking;
+import com.parking.JustPark.model.entity.ParkingLot;
+import com.parking.JustPark.model.entity.ParkingRating;
+import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.service.ParkingLotService;
 import com.parking.JustPark.service.ParkingRatingService;
 import com.parking.JustPark.service.ParkingService;

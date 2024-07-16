@@ -1,11 +1,9 @@
 package com.parking.JustPark.controller;
 
-import com.parking.JustPark.entity.User;
-import com.parking.JustPark.entity.enums.Role;
+import com.parking.JustPark.model.entity.User;
+import com.parking.JustPark.model.constant.Role;
 import com.parking.JustPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
