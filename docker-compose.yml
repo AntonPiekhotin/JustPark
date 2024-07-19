@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  # Postgres database for house-microservice
+  db1:
+    image: bitnami/postgresql:16.1.0-debian-11-r25
+    container_name: justpark-db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: justpark-db
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-db-network
+
+networks:
+  postgres-db-network:
+    driver: bridge
+
+volumes:
+  pg_data:
+    driver: local
+  postgres-data2:
