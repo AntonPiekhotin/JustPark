@@ -8,18 +8,17 @@ import com.parking.JustPark.service.ParkingLotService;
 import com.parking.JustPark.service.ParkingRatingService;
 import com.parking.JustPark.service.ParkingService;
 import com.parking.JustPark.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
@@ -27,43 +26,6 @@ public class UserController {
     private final ParkingRatingService parkingRatingService;
     private final ParkingLotService parkingLotService;
 
-    @Autowired
-    public UserController(UserService userService, ParkingService parkingService, ParkingRatingService parkingRatingService, ParkingLotService parkingLotService) {
-        this.userService = userService;
-        this.parkingService = parkingService;
-        this.parkingRatingService = parkingRatingService;
-        this.parkingLotService = parkingLotService;
-    }
-
-    @GetMapping("/login")
-    public String loginPage(Principal principal, Model model) {
-        User user = userService.getUserByPrincipal(principal);
-        model.addAttribute("currentUser", user);
-        return "login";
-    }
-
-    @GetMapping("/registration")
-    public String registrationPage() {
-        return "registration";
-    }
-
-    @PostMapping("/registration")
-    public String createUser(User user, Model model) {
-        if (!userService.createUser(user)) {
-            model.addAttribute("errorMessage",
-                    "User with this email already exists " + user.getEmail());
-            return "registration";
-        }
-        userService.createUser(user);
-        return "redirect:login";
-    }
-
-    @GetMapping
-    public String mainPage(Model model, Principal principal) {
-        User user = userService.getUserByPrincipal(principal);
-        model.addAttribute("currentUser", user);
-        return "index";
-    }
 
     @GetMapping("/parkings/{userId}")
     public String getParkingListByUser(@PathVariable("userId") long userId, Model model) {

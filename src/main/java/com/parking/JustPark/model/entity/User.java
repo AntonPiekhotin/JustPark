@@ -2,6 +2,9 @@ package com.parking.JustPark.model.entity;
 
 import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.model.constant.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +27,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(max = 50)
+    @Email(regexp = ".+@.+\\..+", message = "Email should be valid")
+    @NotBlank(message = "Email should not be null or blank")
     private String email;
+
+    @NotBlank(message = "Password should not be null or blank")
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

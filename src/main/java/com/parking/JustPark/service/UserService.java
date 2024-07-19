@@ -7,6 +7,7 @@ import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.model.constant.Role;
 import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,22 +23,16 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final ParkingRepository parkingRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository, ParkingRepository parkingRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.parkingRepository = parkingRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     public boolean createUser(User user) {
         String email = user.getEmail();
-        if (userRepository.findByEmail(email) != null)
+        if (userRepository.findByEmail(email).isPresent())
             return false;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Set.of(Role.USER));
@@ -120,7 +115,7 @@ public class UserService {
     public User getUserByPrincipal(Principal principal) {
         if (principal == null)
             return new User();
-        return userRepository.findByEmail(principal.getName());
+        return userRepository.findByEmail(principal.getName()).get();
     }
 
     /**
