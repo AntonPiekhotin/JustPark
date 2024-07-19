@@ -2,15 +2,17 @@ package com.parking.JustPark.model.entity;
 
 import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.model.constant.Role;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -20,7 +22,9 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User implements UserDetails {
 
     @Id
