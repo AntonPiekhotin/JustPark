@@ -11,7 +11,7 @@ spring:
   application:
     name: JustPark
   datasource:
-    url: jdbc:postgresql://localhost:5432/JustPark
+    url: jdbc:postgresql://localhost:5432/justpark-db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
