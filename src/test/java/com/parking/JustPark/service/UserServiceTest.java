@@ -70,7 +70,7 @@ class UserServiceTest {
         user.setPhoneNumber("6625550144");
         user.setRegistrationDate(LocalDate.of(1970, 1, 1));
         user.setRoles(new HashSet<>());
-        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(user);
+        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(Optional.of(user));
 
         User user2 = new User();
         user2.setAccountStatus(AccountStatus.ACTIVE);
@@ -555,7 +555,7 @@ class UserServiceTest {
         user.setPhoneNumber("6625550144");
         user.setRegistrationDate(LocalDate.of(1970, 1, 1));
         user.setRoles(new HashSet<>());
-        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(user);
+        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(Optional.of(user));
 
         // Act
         User actualUserByPrincipal = userService.getUserByPrincipal(new UserPrincipal("principal"));
