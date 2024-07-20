@@ -81,6 +81,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
+    @ExceptionHandler(value = UserAlreadyExistsException.class)
+    public ResponseEntity<ResponseErrorDto> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                .time(LocalDateTime.now())
+                .statusCode(String.valueOf(HttpStatus.CONFLICT.value()))
+                .errorMessage(List.of(ex.getMessage()))
+                .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto);
+    }
+
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ResponseErrorDto> handleException(Exception ex) {
         ResponseErrorDto errorDto = ResponseErrorDto.builder()

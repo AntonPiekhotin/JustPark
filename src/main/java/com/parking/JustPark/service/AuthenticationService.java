@@ -1,5 +1,6 @@
 package com.parking.JustPark.service;
 
+import com.parking.JustPark.exception.UserAlreadyExistsException;
 import com.parking.JustPark.model.dto.LoginUserDto;
 import com.parking.JustPark.model.dto.RegisterUserDto;
 import com.parking.JustPark.model.entity.User;
@@ -28,6 +29,9 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
+        if (userRepository.findByEmail(input.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("User with provided email already exists");
+        }
         User user = User.builder()
                 .firstName(input.getFirstName())
                 .email(input.getEmail())
