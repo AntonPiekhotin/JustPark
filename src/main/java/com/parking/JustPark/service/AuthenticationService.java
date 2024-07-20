@@ -43,7 +43,7 @@ public class AuthenticationService {
 
     public User authenticate(LoginUserDto input) {
         User user = userRepository.findByEmail(input.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User with provided credentials not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User with provided email not found"));
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
