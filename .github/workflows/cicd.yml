@@ -47,6 +47,6 @@ jobs:
 
       - name: Build Docker image and Push to Registry
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-spring-app:latest .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/justpark:latest .
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-spring-app:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/justpark:latest
