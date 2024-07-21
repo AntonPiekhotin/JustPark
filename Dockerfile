@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-temurin
+FROM openjdk:21-jdk
 
 # Copy the packaged jar file into the container at /app
 COPY target/*.jar /app.jar
