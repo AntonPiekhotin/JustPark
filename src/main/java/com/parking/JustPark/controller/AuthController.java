@@ -38,7 +38,7 @@ public class AuthController {
 
         LoginResponseDto loginResponse = LoginResponseDto.builder()
                 .token(jwtToken)
-                .expiresIn(jwtService.getExpirationTime())
+                .expiresIn(jwtService.extractExpiration(jwtToken))
                 .build();
 
         return ResponseEntity.ok(loginResponse);
