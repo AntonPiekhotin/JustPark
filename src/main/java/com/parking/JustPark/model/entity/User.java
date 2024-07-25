@@ -6,10 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,49 +23,48 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Size(max = 50)
     @Email(regexp = ".+@.+\\..+", message = "Email should be valid")
     @NotBlank(message = "Email should not be null or blank")
-    private String email;
+    String email;
 
     @NotBlank(message = "Password should not be null or blank")
-    private String password;
+    String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Parking> parkingList = new ArrayList<>();
+    List<Parking> parkingList = new ArrayList<>();
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    String phoneNumber;
 
     @Column(name = "first_name")
-    private String firstName;
+    String firstName;
 
     @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    String lastName;
 
     @Column(name = "registration_date")
-    private LocalDate registrationDate;
+    LocalDate registrationDate;
 
-    private String country;
+    @Column(name = "country")
+    String country;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_status")
-    private AccountStatus accountStatus;
+    AccountStatus accountStatus;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

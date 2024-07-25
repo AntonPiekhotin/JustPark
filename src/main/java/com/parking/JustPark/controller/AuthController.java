@@ -2,6 +2,7 @@ package com.parking.JustPark.controller;
 
 import com.parking.JustPark.model.dto.LoginResponseDto;
 import com.parking.JustPark.model.dto.LoginUserDto;
+import com.parking.JustPark.model.dto.RegisterResponseDto;
 import com.parking.JustPark.model.dto.RegisterUserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.service.AuthenticationService;
@@ -24,10 +25,21 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<User> register(@RequestBody @Valid RegisterUserDto registerUserDto) {
+    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterUserDto registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
 
-        return ResponseEntity.ok(registeredUser);
+        RegisterResponseDto registerResponse = RegisterResponseDto.builder()
+                .email(registeredUser.getEmail())
+                .roles(registeredUser.getRoles())
+                .firstName(registeredUser.getFirstName())
+                .lastName(registeredUser.getLastName())
+                .phoneNumber(registeredUser.getPhoneNumber())
+                .country(registeredUser.getCountry())
+                .registrationDate(registeredUser.getRegistrationDate())
+                .accountStatus(registeredUser.getAccountStatus())
+                .build();
+
+        return ResponseEntity.status(201).body(registerResponse);
     }
 
     @PostMapping("/sign-in")

@@ -26,4 +26,11 @@ public class RegisterUserDto {
     @Size(max = 50)
     @NotBlank(message = "First name should be valid and not blank")
     String firstName;
+
+    String lastName;
+
+    String phoneNumber;
+
+    String country;
+
 }

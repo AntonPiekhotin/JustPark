@@ -1,6 +1,8 @@
 package com.parking.JustPark.service;
 
 import com.parking.JustPark.exception.UserAlreadyExistsException;
+import com.parking.JustPark.model.constant.AccountStatus;
+import com.parking.JustPark.model.constant.Role;
 import com.parking.JustPark.model.dto.LoginUserDto;
 import com.parking.JustPark.model.dto.RegisterUserDto;
 import com.parking.JustPark.model.entity.User;
@@ -10,6 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 @Service
 public class AuthenticationService {
@@ -33,9 +38,15 @@ public class AuthenticationService {
             throw new UserAlreadyExistsException("User with provided email already exists");
         }
         User user = User.builder()
-                .firstName(input.getFirstName())
                 .email(input.getEmail())
                 .password(passwordEncoder.encode(input.getPassword()))
+                .roles(Set.of(Role.USER))
+                .phoneNumber(input.getPhoneNumber())
+                .firstName(input.getFirstName())
+                .lastName(input.getLastName())
+                .registrationDate(LocalDate.now())
+                .country(input.getCountry())
+                .accountStatus(AccountStatus.ACTIVE)
                 .build();
 
         return userRepository.save(user);

@@ -39,7 +39,6 @@ public class UserController {
                 .email(user.getEmail())
                 .lastName(user.getLastName())
                 .firstName(user.getFirstName())
-                .dateOfBirth(user.getDateOfBirth())
                 .phoneNumber(user.getPhoneNumber())
                 .country(user.getCountry())
                 .registrationDate(user.getRegistrationDate())
