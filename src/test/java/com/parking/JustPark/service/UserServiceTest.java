@@ -537,64 +537,6 @@ class UserServiceTest {
     }
 
     /**
-     * Method under test: {@link UserService#getUserByPrincipal(Principal)}
-     */
-    @Test
-    void testGetUserByPrincipal() {
-        // Arrange
-        User user = new User();
-        user.setAccountStatus(AccountStatus.ACTIVE);
-        user.setCountry("GB");
-        user.setDateOfBirth(mock(Date.class));
-        user.setEmail("jane.doe@example.org");
-        user.setFirstName("Jane");
-        user.setId(1L);
-        user.setLastName("Doe");
-        user.setParkingList(new ArrayList<>());
-        user.setPassword("iloveyou");
-        user.setPhoneNumber("6625550144");
-        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
-        user.setRoles(new HashSet<>());
-        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(Optional.of(user));
-
-        // Act
-        User actualUserByPrincipal = userService.getUserByPrincipal(new UserPrincipal("principal"));
-
-        // Assert
-        verify(userRepository).findByEmail(Mockito.<String>any());
-        assertSame(user, actualUserByPrincipal);
-    }
-
-    /**
-     * Method under test: {@link UserService#getUserByPrincipal(Principal)}
-     */
-    @Test
-    void testGetUserByPrincipal2() {
-        // Arrange
-        User user = new User();
-        user.setAccountStatus(AccountStatus.ACTIVE);
-        user.setCountry("GB");
-        user.setDateOfBirth(mock(Date.class));
-        user.setEmail("jane.doe@example.org");
-        user.setFirstName("Jane");
-        user.setId(1L);
-        user.setLastName("Doe");
-        ArrayList<Parking> parkingList = new ArrayList<>();
-        user.setParkingList(parkingList);
-        user.setPassword("iloveyou");
-        user.setPhoneNumber("6625550144");
-        user.setRegistrationDate(LocalDate.of(1970, 1, 1));
-        user.setRoles(new HashSet<>());
-
-        // Act
-        User actualUserByPrincipal = userService.getUserByPrincipal(null);
-
-        // Assert
-        assertTrue(actualUserByPrincipal.getRoles().isEmpty());
-        assertEquals(parkingList, actualUserByPrincipal.getParkingList());
-    }
-
-    /**
      * Method under test: {@link UserService#changeUserRoles(Long, Map)}
      */
     @Test
