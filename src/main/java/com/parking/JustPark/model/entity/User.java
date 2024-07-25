@@ -58,7 +58,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "date_of_birth")
-    private java.sql.Date dateOfBirth;
+    private Date dateOfBirth;
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
