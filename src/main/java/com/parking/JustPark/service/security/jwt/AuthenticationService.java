@@ -1,4 +1,4 @@
-package com.parking.JustPark.service;
+package com.parking.JustPark.service.security.jwt;
 
 import com.parking.JustPark.exception.UserAlreadyExistsException;
 import com.parking.JustPark.model.constant.AccountStatus;
