@@ -1,9 +1,7 @@
 package com.parking.JustPark.service;
 
-import com.parking.JustPark.model.entity.Customer;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.ParkingLot;
-import com.parking.JustPark.repository.CustomerRepository;
 import com.parking.JustPark.repository.ParkingLotRepository;
 import com.parking.JustPark.repository.ParkingRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +15,11 @@ import java.util.List;
 public class ParkingLotService {
     private final ParkingLotRepository parkingLotRepository;
     private final ParkingRepository parkingRepository;
-    private final CustomerRepository customerRepository;
 
     @Autowired
-    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingRepository parkingRepository, CustomerRepository customerRepository) {
+    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingRepository parkingRepository) {
         this.parkingLotRepository = parkingLotRepository;
         this.parkingRepository = parkingRepository;
-        this.customerRepository = customerRepository;
     }
 
     public boolean createParkingLot(ParkingLot parkingLot, Long parkingId) {
@@ -68,26 +64,6 @@ public class ParkingLotService {
         return false;
     }
 
-    /**
-     * Цей метод резервує паркомісце користувачем.
-     *
-     * @param parkingLotId ідентифікатор паркомісця для резервування.
-     * @param customerId   ідентифікатор користуваача який резервує місце.
-     * @return повертає true якщо операцію виконано, false - якщо операцію не виконано.
-     */
-    public boolean reserveParkingLot(Long parkingLotId, Long customerId) {
-        ParkingLot parkingLot = parkingLotRepository.findById(parkingLotId).orElse(null);
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (parkingLot != null && customer != null) {
-            parkingLot.setIsEmpty(false);
-            parkingLot.setTakenBy(customer);
-            parkingLotRepository.save(parkingLot);
-            log.info("ParkingLot {} is taken by customer {}", parkingLotId, customerId);
-            return true;
-        }
-        log.info("Error occurred while reserving parking lot {} by customer {}", parkingLotId, customerId);
-        return false;
-    }
 
     /**
      * Метод вивільняє паркомісце, тобто змінює поля isEmpty на true, takenBy на null.
@@ -102,7 +78,6 @@ public class ParkingLotService {
             return false;
         }
         parkingLot.setIsEmpty(true);
-        parkingLot.setTakenBy(null);
         parkingLotRepository.save(parkingLot);
         log.info("Parking lot {} is now empty", parkingLotId);
         return true;

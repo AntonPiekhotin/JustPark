@@ -24,7 +24,4 @@ public class ParkingLot {
     @Column(name = "is_vip")
     private Boolean isVip;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer takenBy;
 }

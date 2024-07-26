@@ -16,9 +16,5 @@ public class ParkingRating {
     @JoinColumn(name = "parking_id", nullable = false)
     private Parking parking;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
-
     private int rating;
 }
