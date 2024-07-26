@@ -1,14 +1,17 @@
 package com.parking.JustPark.service;
 
 
+import com.parking.JustPark.exception.UserByPrincipalNotFoundException;
 import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.model.constant.Role;
+import com.parking.JustPark.model.dto.UpdateUserDto;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +61,15 @@ public class UserService {
             return null;
         }
         return parkingRepository.findAllByOwner(owner);
+    }
+
+    public User getAuthenticatedUser() {
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = getUserByEmail(((User) currentUser).getEmail());
+        if (user == null) {
+            throw new UserByPrincipalNotFoundException("User with given principal not found");
+        }
+        return user;
     }
 
     public boolean editStatus(Long userId, AccountStatus newStatus) {
@@ -179,5 +191,15 @@ public class UserService {
         userRepository.save(user);
         log.info("User {} has been unbanned", userId);
         return true;
+    }
+
+    public User updateUser(User user, UpdateUserDto updateUserDto) {
+        user.setPhoneNumber(updateUserDto.getPhoneNumber());
+        user.setFirstName(updateUserDto.getFirstName());
+        user.setLastName(updateUserDto.getLastName());
+        user.setDateOfBirth(updateUserDto.getDateOfBirth());
+        user.setCountry(updateUserDto.getCountry());
+        log.info("User {} has been updated", user.getId());
+        return userRepository.save(user);
     }
 }

@@ -59,6 +59,9 @@ public class User implements UserDetails {
     @Column(name = "registration_date")
     LocalDate registrationDate;
 
+    @Column(name = "date_of_birth")
+    LocalDate dateOfBirth;
+
     @Column(name = "country")
     String country;
 

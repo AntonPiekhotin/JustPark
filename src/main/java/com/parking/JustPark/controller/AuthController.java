@@ -5,7 +5,7 @@ import com.parking.JustPark.model.dto.LoginUserDto;
 import com.parking.JustPark.model.dto.RegisterResponseDto;
 import com.parking.JustPark.model.dto.RegisterUserDto;
 import com.parking.JustPark.model.entity.User;
-import com.parking.JustPark.service.AuthenticationService;
+import com.parking.JustPark.service.security.jwt.AuthenticationService;
 import com.parking.JustPark.service.security.jwt.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

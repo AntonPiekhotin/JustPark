@@ -1,9 +1,11 @@
 package com.parking.JustPark.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -11,19 +13,20 @@ import java.time.LocalDate;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
 @AllArgsConstructor
-public class UserDto {
+public class UpdateUserDto {
 
-    String email;
-
+    @NotBlank(message = "phone number is mandatory")
     String phoneNumber;
 
+    @NotBlank(message = "first name is mandatory")
     String firstName;
 
+    @NotBlank(message = "last name is mandatory")
     String lastName;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate dateOfBirth;
 
-    LocalDate registrationDate;
-
+    @NotBlank(message = "country is mandatory")
     String country;
 }

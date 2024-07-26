@@ -1,18 +1,15 @@
 package com.parking.JustPark.controller;
 
-import com.parking.JustPark.exception.ResponseErrorDto;
+import com.parking.JustPark.model.dto.UpdateUserDto;
 import com.parking.JustPark.model.dto.UserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -24,15 +21,7 @@ public class UserController {
 
     @GetMapping("/my")
     public ResponseEntity<?> getMyInfo() {
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.getUserByEmail(((User) currentUser).getEmail());
-        if (user == null) {
-            var response = ResponseErrorDto.builder()
-                    .statusCode("400")
-                    .errorMessage(List.of("User not found"))
-                    .build();
-            return ResponseEntity.badRequest().body(response);
-        }
+        User user = userService.getAuthenticatedUser();
 
         UserDto userToReturn = UserDto.builder()
                 .email(user.getEmail())
@@ -45,6 +34,25 @@ public class UserController {
 
         return ResponseEntity.ok(userToReturn);
     }
+
+    @PutMapping("/my")
+    public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UpdateUserDto updateUserDto) {
+        User user = userService.getAuthenticatedUser();
+        User updatedUser = userService.updateUser(user, updateUserDto);
+
+        UserDto userToReturn = UserDto.builder()
+                .email(updatedUser.getEmail())
+                .lastName(updatedUser.getLastName())
+                .firstName(updatedUser.getFirstName())
+                .phoneNumber(updatedUser.getPhoneNumber())
+                .country(updatedUser.getCountry())
+                .dateOfBirth(updatedUser.getDateOfBirth())
+                .registrationDate(updatedUser.getRegistrationDate())
+                .build();
+
+        return ResponseEntity.ok(userToReturn);
+    }
+
 
 //    @GetMapping("/parkings/{userId}")
 //    public String getParkingListByUser(@PathVariable("userId") long userId, Model model) {
