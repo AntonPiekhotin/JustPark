@@ -2,7 +2,9 @@ package com.parking.JustPark.model.entity;
 
 import jakarta.persistence.*;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,30 +12,27 @@ import java.util.List;
 @Entity
 @Table(name = "parkings")
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Parking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private User owner;
+    User owner;
 
     @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ParkingLot> parkingLots = new ArrayList<>();
+    List<ParkingLot> parkingLots = new ArrayList<>();
 
     @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ParkingRating> ratings = new ArrayList<>();
+    List<ParkingRating> ratings = new ArrayList<>();
 
-    private String title;
-    private String address;
-    private String city;
+    String title;
+    String address;
+    String city;
 
     @Column(name = "price_default")
-    private double priceDefault;
-
-    @Column(name = "price_vip")
-    private double priceVip;
-
+    Double pricePerHour;
 }
