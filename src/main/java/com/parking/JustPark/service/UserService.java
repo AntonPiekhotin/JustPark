@@ -19,7 +19,6 @@ public class UserService {
     private final JwtService jwtService;
 
     public User getAuthenticatedUser(String token) {
-//        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUserEmail = jwtService.extractUsername(token.substring(7));
         User currentUser = getUserByEmail(currentUserEmail);
         User user = getUserByEmail((currentUser).getEmail());
@@ -41,5 +40,10 @@ public class UserService {
         user.setCountry(updateUserDto.getCountry());
         log.info("User {} has been updated", user.getId());
         return userRepository.save(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+        log.info("User {} has been deleted", user.getId());
     }
 }

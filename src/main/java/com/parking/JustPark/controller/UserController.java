@@ -6,6 +6,7 @@ import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,6 @@ public class UserController {
     public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UpdateUserDto updateUserDto, @RequestHeader("Authorization") String token) {
         User user = userService.getAuthenticatedUser(token);
         User updatedUser = userService.updateUser(user, updateUserDto);
-
         UserDto userToReturn = UserDto.builder()
                 .email(updatedUser.getEmail())
                 .lastName(updatedUser.getLastName())
@@ -47,8 +47,14 @@ public class UserController {
                 .dateOfBirth(updatedUser.getDateOfBirth())
                 .registrationDate(updatedUser.getRegistrationDate())
                 .build();
-
         return ResponseEntity.ok(userToReturn);
+    }
+
+    @DeleteMapping("/my")
+    public ResponseEntity<?> deleteMyAccount(@RequestHeader("Authorization") String token) {
+        User user = userService.getAuthenticatedUser(token);
+        userService.deleteUser(user);
+        return ResponseEntity.status(200).body("User deleted successfully");
     }
 
 
