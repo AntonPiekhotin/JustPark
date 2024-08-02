@@ -20,9 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/my")
-    public ResponseEntity<?> getMyInfo() {
-        User user = userService.getAuthenticatedUser();
-
+    public ResponseEntity<?> getMyInfo(@RequestHeader("Authorization") String token) {
+        User user = userService.getAuthenticatedUser(token);
         UserDto userToReturn = UserDto.builder()
                 .email(user.getEmail())
                 .lastName(user.getLastName())
@@ -31,13 +30,12 @@ public class UserController {
                 .country(user.getCountry())
                 .registrationDate(user.getRegistrationDate())
                 .build();
-
         return ResponseEntity.ok(userToReturn);
     }
 
     @PutMapping("/my")
-    public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UpdateUserDto updateUserDto) {
-        User user = userService.getAuthenticatedUser();
+    public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UpdateUserDto updateUserDto, @RequestHeader("Authorization") String token) {
+        User user = userService.getAuthenticatedUser(token);
         User updatedUser = userService.updateUser(user, updateUserDto);
 
         UserDto userToReturn = UserDto.builder()

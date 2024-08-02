@@ -28,52 +28,52 @@ public class AdminController {
         this.userService = userService;
     }
 
-    // Сторінка адмін панелі для перегляду списку користувачів
-    @GetMapping
-    public String adminPage(Principal principal, Model model) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("usersList", userService.getAllUsers());
-        return "admin";
-    }
-
-    @GetMapping("/user/edit/{id}")
-    public String userEdit(@PathVariable("id") Long id, Model model, Principal principal) {
-        User userToEdit = userService.getUserById(id);
-        if (userToEdit != null) {
-            model.addAttribute("user", userService.getUserByPrincipal(principal));
-            model.addAttribute("userToEdit", userToEdit);
-            model.addAttribute("roles", Role.values());
-            return "userEdit";
-        }
-        return null;
-    }
-
-    @PostMapping("/user/edit/{id}")
-    public String userEditRoles(@PathVariable("id") Long id, @RequestParam Map<String, String> roles) {
-        userService.changeUserRoles(id, roles);
-        return "redirect:/admin";
-    }
-
-    @PostMapping("/user/ban/{id}")
-    public String banUser(@PathVariable("id") Long id) {
-        if (userService.banUser(id))
-            return "redirect:/admin";
-        return "Сталась помилка при блокуванні користувача.";
-    }
-
-    @PostMapping("/user/unban/{id}")
-    public String unbanUser(@PathVariable("id") Long id) {
-        if (userService.unbanUser(id))
-            return "redirect:/admin";
-        return "Сталась помилка при розблокуванні користувача.";
-    }
-
-    @PostMapping("/user/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        if (userService.deleteUser(id))
-            return "redirect:/admin";
-        return "Сталась помилка";
-    }
+//    // Сторінка адмін панелі для перегляду списку користувачів
+//    @GetMapping
+//    public String adminPage(Principal principal, Model model) {
+//        model.addAttribute("user", userService.getUserByPrincipal(principal));
+//        model.addAttribute("usersList", userService.getAllUsers());
+//        return "admin";
+//    }
+//
+//    @GetMapping("/user/edit/{id}")
+//    public String userEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+//        User userToEdit = userService.getUserById(id);
+//        if (userToEdit != null) {
+//            model.addAttribute("user", userService.getUserByPrincipal(principal));
+//            model.addAttribute("userToEdit", userToEdit);
+//            model.addAttribute("roles", Role.values());
+//            return "userEdit";
+//        }
+//        return null;
+//    }
+//
+//    @PostMapping("/user/edit/{id}")
+//    public String userEditRoles(@PathVariable("id") Long id, @RequestParam Map<String, String> roles) {
+//        userService.changeUserRoles(id, roles);
+//        return "redirect:/admin";
+//    }
+//
+//    @PostMapping("/user/ban/{id}")
+//    public String banUser(@PathVariable("id") Long id) {
+//        if (userService.banUser(id))
+//            return "redirect:/admin";
+//        return "Сталась помилка при блокуванні користувача.";
+//    }
+//
+//    @PostMapping("/user/unban/{id}")
+//    public String unbanUser(@PathVariable("id") Long id) {
+//        if (userService.unbanUser(id))
+//            return "redirect:/admin";
+//        return "Сталась помилка при розблокуванні користувача.";
+//    }
+//
+//    @PostMapping("/user/delete/{id}")
+//    public String deleteUser(@PathVariable("id") Long id) {
+//        if (userService.deleteUser(id))
+//            return "redirect:/admin";
+//        return "Сталась помилка";
+//    }
 
     /**
      * Функція створення резервної копії бази даних. Створює файл бекапу в корневій директорії диску C.
