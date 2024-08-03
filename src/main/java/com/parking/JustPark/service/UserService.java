@@ -20,12 +20,7 @@ public class UserService {
 
     public User getAuthenticatedUser(String token) {
         String currentUserEmail = jwtService.extractUsername(token.substring(7));
-        User currentUser = getUserByEmail(currentUserEmail);
-        User user = getUserByEmail((currentUser).getEmail());
-        if (user == null) {
-            throw new UserByPrincipalNotFoundException("User with given principal not found");
-        }
-        return user;
+        return getUserByEmail(currentUserEmail);
     }
 
     public User getUserByEmail(String email) {
