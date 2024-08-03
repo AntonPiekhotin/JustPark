@@ -1,6 +1,6 @@
 package com.parking.JustPark.service;
 
-import com.parking.JustPark.exception.NoAccessException;
+import com.parking.JustPark.exception.JustParkException;
 import com.parking.JustPark.model.dto.ParkingCreationDto;
 import com.parking.JustPark.model.dto.ParkingDto;
 import com.parking.JustPark.model.dto.UpdateParkingDto;
@@ -9,6 +9,7 @@ import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class ParkingService {
 
     private final ParkingRepository parkingRepository;
     private final UserService userService;
+
+    private final String NO_ACCESS_MESSAGE = "You have no access to this resource";
 
     public User getAuthenticatedUser(String token) {
         return userService.getAuthenticatedUser(token);
@@ -51,7 +54,7 @@ public class ParkingService {
         }
         User currentUser = getAuthenticatedUser(token);
         if(!parking.getOwner().getId().equals(currentUser.getId())) {
-            throw new NoAccessException();
+            throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
         }
         return ParkingDto.builder()
                 .id(parking.getId())
@@ -71,7 +74,7 @@ public class ParkingService {
             return null;
         }
         if(!parking.getOwner().getId().equals(currentUser.getId())) {
-            throw new NoAccessException();
+            throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
         }
         parking.setTitle(updateParkingDto.getTitle());
         parking.setAddress(updateParkingDto.getAddress());
@@ -95,7 +98,7 @@ public class ParkingService {
             return false;
         }
         if(!parking.getOwner().getId().equals(currentUser.getId())) {
-            throw new NoAccessException();
+            throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
         }
         parkingRepository.delete(parking);
         return true;

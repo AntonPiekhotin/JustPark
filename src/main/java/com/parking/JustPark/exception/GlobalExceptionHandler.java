@@ -82,17 +82,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
-    @ExceptionHandler(value = UserAlreadyExistsException.class)
-    public ResponseEntity<ResponseErrorDto> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        ResponseErrorDto errorDto = ResponseErrorDto.builder()
-                .time(LocalDateTime.now())
-                .statusCode(String.valueOf(HttpStatus.CONFLICT.value()))
-                .errorMessage(List.of(ex.getMessage()))
-                .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
-                .build();
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto);
-    }
-
     @ExceptionHandler(value = BadCredentialsException.class)
     public ResponseEntity<ResponseErrorDto> handleBadCredentialsException(BadCredentialsException ex) {
         ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -104,15 +93,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto);
     }
 
-    @ExceptionHandler(value = NoAccessException.class)
-    public ResponseEntity<ResponseErrorDto> handleNoAccessException(NoAccessException ex) {
+    @ExceptionHandler(value = JustParkException.class)
+    public ResponseEntity<ResponseErrorDto> handleJustParkException(JustParkException ex) {
         ResponseErrorDto errorDto = ResponseErrorDto.builder()
                 .time(LocalDateTime.now())
-                .statusCode(String.valueOf(HttpStatus.FORBIDDEN.value()))
+                .statusCode(String.valueOf(ex.getCode().value()))
                 .errorMessage(List.of(ex.getMessage()))
                 .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
                 .build();
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDto);
+        return ResponseEntity.status(ex.getCode()).body(errorDto);
     }
 
     @ExceptionHandler(value = Exception.class)

@@ -1,12 +1,13 @@
 package com.parking.JustPark.service.security.jwt;
 
-import com.parking.JustPark.exception.UserAlreadyExistsException;
+import com.parking.JustPark.exception.JustParkException;
 import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.model.constant.Role;
 import com.parking.JustPark.model.dto.LoginUserDto;
 import com.parking.JustPark.model.dto.RegisterUserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +36,7 @@ public class AuthenticationService {
 
     public User signup(RegisterUserDto input) {
         if (userRepository.findByEmail(input.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("User with provided email already exists");
+            throw new JustParkException("User with provided email already exists", HttpStatus.BAD_REQUEST);
         }
         User user = User.builder()
                 .email(input.getEmail())
