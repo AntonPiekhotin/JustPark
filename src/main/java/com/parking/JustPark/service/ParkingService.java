@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -32,6 +34,13 @@ public class ParkingService {
                 .owner(currentUser)
                 .build();
         parkingRepository.save(parking);
+    }
+
+    public List<Parking> getMyParkings(String token) {
+        User currentUser = getAuthenticatedUser(token);
+        List<Parking> parkings = parkingRepository.findAllByOwner(currentUser);
+        parkings.forEach(parking -> parking.setOwner(null));
+        return parkings;
     }
 
 

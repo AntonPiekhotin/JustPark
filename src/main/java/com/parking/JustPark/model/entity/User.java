@@ -44,9 +44,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Parking> parkingList = new ArrayList<>();
-
     @Column(name = "phone_number")
     String phoneNumber;
 

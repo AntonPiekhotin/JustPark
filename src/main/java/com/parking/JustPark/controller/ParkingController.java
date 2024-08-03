@@ -29,4 +29,9 @@ public class ParkingController {
                 .build();
         return ResponseEntity.ok(parkingToReturn);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getMyParkings(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok().body(parkingService.getMyParkings(token));
+    }
 }
