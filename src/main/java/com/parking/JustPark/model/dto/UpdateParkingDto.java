@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
@@ -24,4 +26,6 @@ public class UpdateParkingDto {
     @NotBlank(message = "City is required")
     @Size(max = 100, message = "City is too long")
     String city;
+
+    BigDecimal pricePerHour;
 }

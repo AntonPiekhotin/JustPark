@@ -79,6 +79,7 @@ public class ParkingService {
         parking.setTitle(updateParkingDto.getTitle());
         parking.setAddress(updateParkingDto.getAddress());
         parking.setCity(updateParkingDto.getCity());
+        parking.setPricePerHour(updateParkingDto.getPricePerHour());
         parkingRepository.save(parking);
         return ParkingDto.builder()
                 .id(parking.getId())

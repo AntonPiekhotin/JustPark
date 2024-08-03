@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,6 @@ public class Parking {
     String address;
     String city;
 
-    @Column(name = "price_default")
-    Double pricePerHour;
+    @Column(name = "price_per_hour")
+    BigDecimal pricePerHour;
 }

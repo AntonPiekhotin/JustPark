@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -20,5 +21,5 @@ public class ParkingDto {
     String city;
     List<ParkingLot> parkingLots;
     List<ParkingRating> ratings;
-    Double pricePerHour;
+    BigDecimal pricePerHour;
 }

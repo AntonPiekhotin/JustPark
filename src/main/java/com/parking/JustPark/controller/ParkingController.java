@@ -57,7 +57,15 @@ public class ParkingController {
             @PathVariable Long id,
             @Valid @RequestBody UpdateParkingDto parkingDto,
             @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(parkingService.updateParking(id, parkingDto, token));
+        ParkingDto parking = parkingService.updateParking(id, parkingDto, token);
+        if (parking == null) {
+            return ResponseEntity.badRequest().body(ResponseErrorDto.builder()
+                    .time(LocalDateTime.now())
+                    .statusCode("400")
+                    .errorMessage(List.of("Parking with this id not found"))
+                    .build());
+        }
+        return ResponseEntity.ok(parking);
     }
 
     @DeleteMapping("/{id}")
