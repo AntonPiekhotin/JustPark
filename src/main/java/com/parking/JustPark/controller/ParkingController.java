@@ -1,6 +1,8 @@
 package com.parking.JustPark.controller;
 
+import com.parking.JustPark.exception.ResponseErrorDto;
 import com.parking.JustPark.model.dto.ParkingCreationDto;
+import com.parking.JustPark.model.dto.ParkingDto;
 import com.parking.JustPark.model.dto.ParkingResponseDto;
 import com.parking.JustPark.model.dto.UpdateParkingDto;
 import com.parking.JustPark.service.ParkingService;
@@ -9,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user/my/parking")
@@ -36,6 +41,14 @@ public class ParkingController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getParkingById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        ParkingDto parking = parkingService.getParkingById(id, token);
+        if (parking == null) {
+            return ResponseEntity.badRequest().body(ResponseErrorDto.builder()
+                    .time(LocalDateTime.now())
+                    .statusCode("400")
+                    .errorMessage(List.of("Parking with id not found"))
+                    .build());
+        }
         return ResponseEntity.ok().body(parkingService.getParkingById(id, token));
     }
 
@@ -45,5 +58,17 @@ public class ParkingController {
             @Valid @RequestBody UpdateParkingDto parkingDto,
             @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(parkingService.updateParking(id, parkingDto, token));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteParking(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        if (!parkingService.deleteParking(id, token)) {
+            return ResponseEntity.badRequest().body(ResponseErrorDto.builder()
+                    .time(LocalDateTime.now())
+                    .statusCode("400")
+                    .errorMessage(List.of("Parking with id not found"))
+                    .build());
+        }
+        return ResponseEntity.ok().body("Parking deleted successfully");
     }
 }

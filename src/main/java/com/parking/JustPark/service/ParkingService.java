@@ -3,15 +3,12 @@ package com.parking.JustPark.service;
 import com.parking.JustPark.exception.NoAccessException;
 import com.parking.JustPark.model.dto.ParkingCreationDto;
 import com.parking.JustPark.model.dto.ParkingDto;
-import com.parking.JustPark.model.dto.ParkingResponseDto;
 import com.parking.JustPark.model.dto.UpdateParkingDto;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingRepository;
-import com.parking.JustPark.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,14 +88,16 @@ public class ParkingService {
                 .build();
     }
 
-    public boolean deleteParking(Long parkingId) {
-        Parking parking = parkingRepository.findById(parkingId).orElse(null);
+    public boolean deleteParking(Long id, String token) {
+        User currentUser = getAuthenticatedUser(token);
+        Parking parking = parkingRepository.findById(id).orElse(null);
         if (parking == null) {
-            log.info("Parking with this id {} doesn`t exists", parkingId);
             return false;
         }
+        if(!parking.getOwner().getId().equals(currentUser.getId())) {
+            throw new NoAccessException();
+        }
         parkingRepository.delete(parking);
-        log.info("Deleted parking {}", parkingId);
-        return false;
+        return true;
     }
 }
