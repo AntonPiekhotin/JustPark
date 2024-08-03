@@ -1,7 +1,6 @@
 package com.parking.JustPark.service;
 
 
-import com.parking.JustPark.exception.UserByPrincipalNotFoundException;
 import com.parking.JustPark.model.dto.UpdateUserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.UserRepository;
