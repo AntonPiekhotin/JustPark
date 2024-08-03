@@ -2,8 +2,6 @@ package com.parking.JustPark.controller;
 
 import com.parking.JustPark.model.dto.ParkingCreationDto;
 import com.parking.JustPark.model.dto.ParkingResponseDto;
-import com.parking.JustPark.model.entity.User;
-import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.service.ParkingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +31,10 @@ public class ParkingController {
     @GetMapping("/all")
     public ResponseEntity<?> getMyParkings(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(parkingService.getMyParkings(token));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getParkingById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok().body(parkingService.getParkingById(id, token));
     }
 }

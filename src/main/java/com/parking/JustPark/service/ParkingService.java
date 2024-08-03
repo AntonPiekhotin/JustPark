@@ -1,5 +1,6 @@
 package com.parking.JustPark.service;
 
+import com.parking.JustPark.exception.NoAccessException;
 import com.parking.JustPark.model.dto.ParkingCreationDto;
 import com.parking.JustPark.model.dto.ParkingResponseDto;
 import com.parking.JustPark.model.entity.Parking;
@@ -44,8 +45,16 @@ public class ParkingService {
     }
 
 
-    public Parking getParkingById(Long parkingId) {
-        return parkingRepository.findById(parkingId).orElse(null);
+    public Parking getParkingById(Long parkingId, String token) {
+        Parking parking = parkingRepository.findById(parkingId).orElse(null);
+        if (parking == null) {
+            return null;
+        }
+        User currentUser = getAuthenticatedUser(token);
+        if(!parking.getOwner().getId().equals(currentUser.getId())) {
+            throw new NoAccessException();
+        }
+        return parking;
     }
 
     public boolean deleteParking(Long parkingId) {
