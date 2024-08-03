@@ -2,7 +2,9 @@ package com.parking.JustPark.service;
 
 import com.parking.JustPark.exception.NoAccessException;
 import com.parking.JustPark.model.dto.ParkingCreationDto;
+import com.parking.JustPark.model.dto.ParkingDto;
 import com.parking.JustPark.model.dto.ParkingResponseDto;
+import com.parking.JustPark.model.dto.UpdateParkingDto;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingRepository;
@@ -45,7 +47,7 @@ public class ParkingService {
     }
 
 
-    public Parking getParkingById(Long parkingId, String token) {
+    public ParkingDto getParkingById(Long parkingId, String token) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
             return null;
@@ -54,7 +56,39 @@ public class ParkingService {
         if(!parking.getOwner().getId().equals(currentUser.getId())) {
             throw new NoAccessException();
         }
-        return parking;
+        return ParkingDto.builder()
+                .id(parking.getId())
+                .title(parking.getTitle())
+                .address(parking.getAddress())
+                .city(parking.getCity())
+                .parkingLots(parking.getParkingLots())
+                .ratings(parking.getRatings())
+                .pricePerHour(parking.getPricePerHour())
+                .build();
+    }
+
+    public ParkingDto updateParking(Long id, UpdateParkingDto updateParkingDto, String token) {
+        User currentUser = getAuthenticatedUser(token);
+        Parking parking = parkingRepository.findById(id).orElse(null);
+        if (parking == null) {
+            return null;
+        }
+        if(!parking.getOwner().getId().equals(currentUser.getId())) {
+            throw new NoAccessException();
+        }
+        parking.setTitle(updateParkingDto.getTitle());
+        parking.setAddress(updateParkingDto.getAddress());
+        parking.setCity(updateParkingDto.getCity());
+        parkingRepository.save(parking);
+        return ParkingDto.builder()
+                .id(parking.getId())
+                .title(parking.getTitle())
+                .address(parking.getAddress())
+                .city(parking.getCity())
+                .parkingLots(parking.getParkingLots())
+                .ratings(parking.getRatings())
+                .pricePerHour(parking.getPricePerHour())
+                .build();
     }
 
     public boolean deleteParking(Long parkingId) {
@@ -65,16 +99,6 @@ public class ParkingService {
         }
         parkingRepository.delete(parking);
         log.info("Deleted parking {}", parkingId);
-        return false;
-    }
-
-    public boolean editParking(Parking parking) {
-        if (parking != null) {
-            parkingRepository.save(parking);
-            log.info("Parking {} has been edited", parking.getId());
-            return true;
-        }
-        log.info("Error occurred while editing parking {}, probably object is null", parking.getId());
         return false;
     }
 }

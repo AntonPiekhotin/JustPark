@@ -2,6 +2,7 @@ package com.parking.JustPark.controller;
 
 import com.parking.JustPark.model.dto.ParkingCreationDto;
 import com.parking.JustPark.model.dto.ParkingResponseDto;
+import com.parking.JustPark.model.dto.UpdateParkingDto;
 import com.parking.JustPark.service.ParkingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,13 @@ public class ParkingController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getParkingById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(parkingService.getParkingById(id, token));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateParking(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateParkingDto parkingDto,
+            @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(parkingService.updateParking(id, parkingDto, token));
     }
 }
