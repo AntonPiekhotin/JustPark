@@ -2,8 +2,7 @@ package com.parking.JustPark.model.entity;
 
 import jakarta.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
@@ -12,6 +11,9 @@ import java.util.List;
 @Entity
 @Table(name = "parkings")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Parking {
 

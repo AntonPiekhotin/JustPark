@@ -1,36 +1,39 @@
 package com.parking.JustPark.service;
 
+import com.parking.JustPark.model.dto.ParkingCreationDto;
+import com.parking.JustPark.model.dto.ParkingResponseDto;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingRepository;
 import com.parking.JustPark.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ParkingService {
+
     private final ParkingRepository parkingRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    @Autowired
-    public ParkingService(ParkingRepository parkingRepository, UserRepository userRepository) {
-        this.parkingRepository = parkingRepository;
-        this.userRepository = userRepository;
+    public User getAuthenticatedUser(String token) {
+        return userService.getAuthenticatedUser(token);
     }
 
-    public boolean createParking(Parking parking, Long ownerId) {
-        User owner = userRepository.findById(ownerId).orElse(null);
-        if (owner == null) {
-            log.info("User with this id {} doesn`t exists", ownerId);
-            return false;
-        }
-        parking.setOwner(owner);
+    public void createParking(ParkingCreationDto parkingDto, String token) {
+        User currentUser = getAuthenticatedUser(token);
+        Parking parking = Parking.builder()
+                .title(parkingDto.getTitle())
+                .address(parkingDto.getAddress())
+                .city(parkingDto.getCity())
+                .owner(currentUser)
+                .build();
         parkingRepository.save(parking);
-        log.info("Created parking {} by user {}", parking.getId(), owner.getId());
-        return true;
     }
+
 
     public Parking getParkingById(Long parkingId) {
         return parkingRepository.findById(parkingId).orElse(null);
