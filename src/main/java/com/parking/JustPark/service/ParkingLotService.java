@@ -88,6 +88,24 @@ public class ParkingLotService {
         return parkingLotsResponse;
     }
 
+    public ParkingLotResponseDto getParkingLotById(Long parkingId, Long parkingLotId, String token) {
+        Parking parking = parkingRepository.findById(parkingId).orElse(null);
+        if (parking == null) {
+            throw new JustParkException("Parking with given id not found", HttpStatus.BAD_REQUEST);
+        }
+        checkOwner(parking, token);
+        ParkingLot parkingLot = parkingLotRepository.findById(parkingLotId).orElse(null);
+        if (parkingLot == null) {
+            throw new JustParkException("Parking lot with given id not found", HttpStatus.BAD_REQUEST);
+        }
+        return ParkingLotResponseDto.builder()
+                .id(parkingLot.getId())
+                .parkingId(parkingLot.getParking().getId())
+                .title(parkingLot.getTitle())
+                .layer(parkingLot.getLayer())
+                .isEmpty(parkingLot.getIsEmpty())
+                .build();
+    }
     /**
      * Метод вивільняє паркомісце, тобто змінює поля isEmpty на true, takenBy на null.
      *

@@ -96,4 +96,14 @@ public class ParkingController {
         List<ParkingLotResponseDto> parkingLots = parkingLotService.listByParking(id, token);
         return ResponseEntity.ok(parkingLots);
     }
+
+    @GetMapping("/{id}/lots/{lotId}")
+    public ResponseEntity<?> getParkingLotById(
+            @PathVariable Long id,
+            @PathVariable Long lotId,
+            @RequestHeader("Authorization") String token) {
+        ParkingLotResponseDto parkingLot = parkingLotService.getParkingLotById(id, lotId, token);
+        return ResponseEntity.ok(parkingLot);
+    }
+
 }
