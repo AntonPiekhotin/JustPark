@@ -1,39 +1,59 @@
 package com.parking.JustPark.service;
 
+import com.parking.JustPark.exception.JustParkException;
+import com.parking.JustPark.model.dto.ParkingLotCreationDto;
+import com.parking.JustPark.model.dto.ParkingLotResponseDto;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.ParkingLot;
+import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.ParkingLotRepository;
 import com.parking.JustPark.repository.ParkingRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ParkingLotService {
+
     private final ParkingLotRepository parkingLotRepository;
     private final ParkingRepository parkingRepository;
+    private final UserService userService;
 
-    @Autowired
-    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingRepository parkingRepository) {
-        this.parkingLotRepository = parkingLotRepository;
-        this.parkingRepository = parkingRepository;
+    private final String NO_ACCESS_MESSAGE = "You have no access to this resource";
+
+    private User getAuthenticatedUser(String token) {
+        return userService.getAuthenticatedUser(token);
     }
 
-    public boolean createParkingLot(ParkingLot parkingLot, Long parkingId) {
+    public ParkingLotResponseDto createParkingLot(Long parkingId, ParkingLotCreationDto parkingLot, String token) {
+        User currentUser = getAuthenticatedUser(token);
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
-        if (parking != null) {
-            parkingLot.setParking(parking);
-            parkingLot.setIsEmpty(true);
-            parkingLotRepository.save(parkingLot);
-            log.info("Created parking lot {} in parking {}", parkingLot.getId(), parking.getId());
-            return true;
+        if (parking == null) {
+            throw new JustParkException("Parking with given id not found", HttpStatus.BAD_REQUEST);
         }
-        log.info("Error occurred while creating parking lot {}, probably parkingId {} is wrong",
-                parkingLot.getId(), parkingId);
-        return false;
+        if (!parking.getOwner().getId().equals(currentUser.getId())) {
+            throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
+        }
+        ParkingLot newParkingLot = ParkingLot.builder()
+                .title(parkingLot.getTitle())
+                .isEmpty(true)
+                .layer(parkingLot.getLayer())
+                .parking(parking)
+                .build();
+        parkingLotRepository.save(newParkingLot);
+
+        return ParkingLotResponseDto.builder()
+                .id(newParkingLot.getId())
+                .parkingId(newParkingLot.getParking().getId())
+                .title(newParkingLot.getTitle())
+                .layer(newParkingLot.getLayer())
+                .isEmpty(newParkingLot.getIsEmpty())
+                .build();
     }
 
     public List<ParkingLot> listByParking(Long parkingId) {
@@ -43,27 +63,6 @@ public class ParkingLotService {
         log.info("No parking lots in this parking {}", parkingId);
         return null;
     }
-
-    /**
-     * Метод змінює статус vip паркомісця на протилежний (true або false).
-     *
-     * @param parkingLotId ідентифікатор паркомісця.
-     * @return true, якщо зміна відбулась, false якщо сталась помилка.
-     */
-    public boolean changeLotStatus(Long parkingLotId) {
-        ParkingLot parkingLot = parkingLotRepository.findById(parkingLotId).orElse(null);
-        if (parkingLot != null) {
-            boolean currentStatus = parkingLot.getIsVip();
-            parkingLot.setIsVip(!currentStatus);
-            parkingLotRepository.save(parkingLot);
-            log.info("Vip status changed to {} no parkingLot {}", currentStatus, parkingLotId);
-            return true;
-        }
-        log.info("Error occurred while changing vip status on parking lot {}, probably parkingLot {} is null",
-                parkingLotId, parkingLotId);
-        return false;
-    }
-
 
     /**
      * Метод вивільняє паркомісце, тобто змінює поля isEmpty на true, takenBy на null.

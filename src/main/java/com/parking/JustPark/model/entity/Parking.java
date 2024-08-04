@@ -26,8 +26,8 @@ public class Parking {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     User owner;
 
-    @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ParkingLot> parkingLots = new ArrayList<>();
+//    @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
+//    List<ParkingLot> parkingLots = new ArrayList<>();
 
     @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ParkingRating> ratings = new ArrayList<>();

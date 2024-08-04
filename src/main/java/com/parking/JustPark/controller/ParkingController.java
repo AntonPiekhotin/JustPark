@@ -1,13 +1,12 @@
 package com.parking.JustPark.controller;
 
 import com.parking.JustPark.exception.ResponseErrorDto;
-import com.parking.JustPark.model.dto.ParkingCreationDto;
-import com.parking.JustPark.model.dto.ParkingDto;
-import com.parking.JustPark.model.dto.ParkingResponseDto;
-import com.parking.JustPark.model.dto.UpdateParkingDto;
+import com.parking.JustPark.model.dto.*;
+import com.parking.JustPark.service.ParkingLotService;
 import com.parking.JustPark.service.ParkingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,7 @@ import java.util.List;
 public class ParkingController {
 
     private final ParkingService parkingService;
+    private final ParkingLotService parkingLotService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createParking(@Valid @RequestBody ParkingCreationDto parkingDto, @RequestHeader("Authorization") String token) {
@@ -78,5 +78,14 @@ public class ParkingController {
                     .build());
         }
         return ResponseEntity.ok().body("Parking deleted successfully");
+    }
+
+    @PostMapping("/{id}/lots")
+    public ResponseEntity<?> createParkingLot(
+            @PathVariable Long id,
+            @Valid @RequestBody ParkingLotCreationDto parkingLotDto,
+            @RequestHeader("Authorization") String token) {
+        ParkingLotResponseDto parkingLotResponse = parkingLotService.createParkingLot(id, parkingLotDto, token);
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingLotResponse);
     }
 }

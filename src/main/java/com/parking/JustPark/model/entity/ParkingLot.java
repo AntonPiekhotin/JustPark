@@ -1,27 +1,30 @@
 package com.parking.JustPark.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "parking_lots")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ParkingLot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "parking_id", referencedColumnName = "id")
-    private Parking parking;
+    Parking parking;
 
     @Column(name = "is_empty")
-    private Boolean isEmpty;
+    Boolean isEmpty;
 
-    private Integer layer;
+    Integer layer;
 
-    @Column(name = "is_vip")
-    private Boolean isVip;
-
+    String title;
 }
