@@ -36,7 +36,7 @@ public class ParkingController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getMyParkings(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok().body(parkingService.getMyParkings(token));
+        return ResponseEntity.ok(parkingService.getMyParkings(token));
     }
 
     @GetMapping("/{id}")
@@ -49,7 +49,7 @@ public class ParkingController {
                     .errorMessage(List.of("Parking with id not found"))
                     .build());
         }
-        return ResponseEntity.ok().body(parkingService.getParkingById(id, token));
+        return ResponseEntity.ok(parkingService.getParkingById(id, token));
     }
 
     @PutMapping("/{id}")
@@ -77,7 +77,7 @@ public class ParkingController {
                     .errorMessage(List.of("Parking with id not found"))
                     .build());
         }
-        return ResponseEntity.ok().body("Parking deleted successfully");
+        return ResponseEntity.ok("Parking deleted successfully");
     }
 
     @PostMapping("/{id}/lots")
@@ -87,5 +87,13 @@ public class ParkingController {
             @RequestHeader("Authorization") String token) {
         ParkingLotResponseDto parkingLotResponse = parkingLotService.createParkingLot(id, parkingLotDto, token);
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingLotResponse);
+    }
+
+    @GetMapping("/{id}/lots")
+    public ResponseEntity<?> getAllParkingLots(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String token) {
+        List<ParkingLotResponseDto> parkingLots = parkingLotService.listByParking(id, token);
+        return ResponseEntity.ok(parkingLots);
     }
 }

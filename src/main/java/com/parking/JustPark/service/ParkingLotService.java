@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,14 +32,11 @@ public class ParkingLotService {
     }
 
     public ParkingLotResponseDto createParkingLot(Long parkingId, ParkingLotCreationDto parkingLot, String token) {
-        User currentUser = getAuthenticatedUser(token);
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
             throw new JustParkException("Parking with given id not found", HttpStatus.BAD_REQUEST);
         }
-        if (!parking.getOwner().getId().equals(currentUser.getId())) {
-            throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
-        }
+        checkOwner(parking, token);
         ParkingLot newParkingLot = ParkingLot.builder()
                 .title(parkingLot.getTitle())
                 .isEmpty(true)
@@ -56,12 +54,38 @@ public class ParkingLotService {
                 .build();
     }
 
-    public List<ParkingLot> listByParking(Long parkingId) {
+    private void checkOwner(Parking parking, String token) {
+        User currentUser = getAuthenticatedUser(token);
+        if (parking == null) {
+            throw new JustParkException("Parking with given id not found", HttpStatus.BAD_REQUEST);
+        }
+        if (!parking.getOwner().getId().equals(currentUser.getId())) {
+            throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
+        }
+    }
+
+    public List<ParkingLotResponseDto> listByParking(Long parkingId, String token) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
-        if (parking != null)
-            return parkingLotRepository.findAllByParking(parking);
-        log.info("No parking lots in this parking {}", parkingId);
-        return null;
+        if (parking == null) {
+            throw new JustParkException("Parking with given id not found", HttpStatus.BAD_REQUEST);
+        }
+        checkOwner(parking, token);
+        List<ParkingLot> parkingLots = parkingLotRepository.findAllByParking(parking);
+        if (parkingLots.isEmpty())
+            return null;
+
+        List<ParkingLotResponseDto> parkingLotsResponse = new ArrayList<>();
+        parkingLots.forEach(parkingLot -> {
+            parkingLotsResponse.add(ParkingLotResponseDto.builder()
+                    .id(parkingLot.getId())
+                    .parkingId(parkingLot.getParking().getId())
+                    .title(parkingLot.getTitle())
+                    .layer(parkingLot.getLayer())
+                    .isEmpty(parkingLot.getIsEmpty())
+                    .build()
+            );
+        });
+        return parkingLotsResponse;
     }
 
     /**
