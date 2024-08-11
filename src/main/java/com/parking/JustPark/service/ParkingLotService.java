@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -31,27 +32,35 @@ public class ParkingLotService {
         return userService.getAuthenticatedUser(token);
     }
 
-    public ParkingLotResponseDto createParkingLot(Long parkingId, ParkingLotCreationDto parkingLot, String token) {
+    public List<ParkingLotResponseDto> createParkingLot(Long parkingId, List<ParkingLotCreationDto> parkingLots, String token) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
             throw new JustParkException("Parking with given id not found", HttpStatus.BAD_REQUEST);
         }
         checkOwner(parking, token);
-        ParkingLot newParkingLot = ParkingLot.builder()
-                .title(parkingLot.getTitle())
-                .isEmpty(true)
-                .layer(parkingLot.getLayer())
-                .parking(parking)
-                .build();
-        parkingLotRepository.save(newParkingLot);
+        List<ParkingLot> newParkingLots = new LinkedList<>();
 
-        return ParkingLotResponseDto.builder()
-                .id(newParkingLot.getId())
-                .parkingId(newParkingLot.getParking().getId())
-                .title(newParkingLot.getTitle())
-                .layer(newParkingLot.getLayer())
-                .isEmpty(newParkingLot.getIsEmpty())
-                .build();
+        parkingLots.forEach(parkingLot -> {
+            ParkingLot newParkingLot = ParkingLot.builder()
+                    .title(parkingLot.getTitle())
+                    .isEmpty(true)
+                    .layer(parkingLot.getLayer())
+                    .parking(parking)
+                    .build();
+            newParkingLots.add(newParkingLot);
+            parkingLotRepository.save(newParkingLot);
+        });
+
+        return newParkingLots.stream()
+                .map(parkingLot ->
+                        ParkingLotResponseDto.builder()
+                                .id(parkingLot.getId())
+                                .parkingId(parkingLot.getParking().getId())
+                                .title(parkingLot.getTitle())
+                                .layer(parkingLot.getLayer())
+                                .isEmpty(false)
+                                .build())
+                .toList();
     }
 
     private void checkOwner(Parking parking, String token) {
@@ -106,6 +115,7 @@ public class ParkingLotService {
                 .isEmpty(parkingLot.getIsEmpty())
                 .build();
     }
+
     /**
      * Метод вивільняє паркомісце, тобто змінює поля isEmpty на true, takenBy на null.
      *
