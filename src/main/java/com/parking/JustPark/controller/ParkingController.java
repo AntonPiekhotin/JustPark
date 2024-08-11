@@ -2,10 +2,10 @@ package com.parking.JustPark.controller;
 
 import com.parking.JustPark.exception.ResponseErrorDto;
 import com.parking.JustPark.model.dto.*;
+import com.parking.JustPark.model.request.ParkingLotCreationRequest;
 import com.parking.JustPark.service.ParkingLotService;
 import com.parking.JustPark.service.ParkingService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,9 +84,9 @@ public class ParkingController {
     @PostMapping("/{id}/lots")
     public ResponseEntity<?> createParkingLot(
             @PathVariable Long id,
-            @RequestBody @Valid List<@NotNull ParkingLotCreationDto> parkingLots,
+            @RequestBody @Valid ParkingLotCreationRequest request,
             @RequestHeader("Authorization") String token) {
-        List<ParkingLotResponseDto> parkingLotsResponse = parkingLotService.createParkingLot(id, parkingLots, token);
+        List<ParkingLotResponseDto> parkingLotsResponse = parkingLotService.createParkingLot(id, request.getParkingLots(), token);
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingLotsResponse);
     }
 
