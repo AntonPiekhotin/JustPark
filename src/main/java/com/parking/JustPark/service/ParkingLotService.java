@@ -116,44 +116,5 @@ public class ParkingLotService {
                 .build();
     }
 
-    /**
-     * Метод вивільняє паркомісце, тобто змінює поля isEmpty на true, takenBy на null.
-     *
-     * @param parkingLotId ідентифікатор паркомісця.
-     * @return повертає true якщо операцію виконано, false - якщо операцію не виконано.
-     */
-    public boolean releaseParkingLot(Long parkingLotId) {
-        ParkingLot parkingLot = parkingLotRepository.findById(parkingLotId).orElse(null);
-        if (parkingLot == null) {
-            log.info("Parking lot with given id {} is null", parkingLotId);
-            return false;
-        }
-        parkingLot.setIsEmpty(true);
-        parkingLotRepository.save(parkingLot);
-        log.info("Parking lot {} is now empty", parkingLotId);
-        return true;
-    }
 
-    public boolean editLayer(Long parkingLotId, int layer) {
-        ParkingLot parkingLot = parkingLotRepository.findById(parkingLotId).orElse(null);
-        if (parkingLot == null) {
-            log.info("Parking lot with given id {} is null", parkingLotId);
-            return false;
-        }
-        parkingLot.setLayer(layer);
-        parkingLotRepository.save(parkingLot);
-        log.info("Layer changed to {} in parking lot {}", layer, parkingLotId);
-        return true;
-    }
-
-    public boolean deleteParkingLot(Long parkingLotId) {
-        ParkingLot parkingLot = parkingLotRepository.findById(parkingLotId).orElse(null);
-        if (parkingLot == null) {
-            log.info("Parking lot with given id {} is null", parkingLotId);
-            return false;
-        }
-        parkingLotRepository.delete(parkingLot);
-        log.info("Parking lot {} has been deleted", parkingLotId);
-        return true;
-    }
 }
