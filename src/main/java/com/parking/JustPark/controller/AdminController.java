@@ -1,23 +1,14 @@
 package com.parking.JustPark.controller;
 
 import com.parking.JustPark.model.entity.User;
-import com.parking.JustPark.model.constant.Role;
 import com.parking.JustPark.service.ParkingService;
 import com.parking.JustPark.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -28,5 +19,28 @@ public class AdminController {
     private final UserService userService;
     private final ParkingService parkingService;
 
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(Objects.requireNonNullElse(user, "User not found"));
+    }
+
+    @PutMapping("/user/ban/{id}")
+    public ResponseEntity<?> banUser(@PathVariable Long id) {
+        User user = userService.banUser(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/user/unban/{id}")
+    public ResponseEntity<?> unbanUser(@PathVariable Long id) {
+        User user = userService.unbanUser(id);
+        return ResponseEntity.ok(user);
+    }
 
 }
