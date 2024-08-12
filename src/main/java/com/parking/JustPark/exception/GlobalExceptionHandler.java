@@ -5,6 +5,7 @@ import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -113,5 +114,16 @@ public class GlobalExceptionHandler {
                 .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
+    }
+
+    @ExceptionHandler(value = DisabledException.class)
+    public ResponseEntity<ResponseErrorDto> handleDisabledException(DisabledException ex) {
+        ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                .time(LocalDateTime.now())
+                .statusCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()))
+                .errorMessage(List.of("User is banned"))
+                .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto);
     }
 }
