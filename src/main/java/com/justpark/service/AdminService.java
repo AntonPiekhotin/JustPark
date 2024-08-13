@@ -58,22 +58,44 @@ public class AdminService {
         return user;
     }
 
-    public User banUser(Long id) {
+    public UserDto banUser(Long id) {
         checkIfExistsAndNotAdmin(id);
         User user = getUserById(id);
         user.setAccountStatus(AccountStatus.BANNED);
         userRepository.save(user);
         log.info("User {} has been banned", user.getId());
-        return user;
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .registrationDate(user.getRegistrationDate())
+                .country(user.getCountry())
+                .roles(user.getRoles())
+                .accountStatus(user.getAccountStatus())
+                .build();
     }
 
-    public User unbanUser(Long id) {
+    public UserDto unbanUser(Long id) {
         checkIfExistsAndNotAdmin(id);
         User user = getUserById(id);
         user.setAccountStatus(AccountStatus.ACTIVE);
         userRepository.save(user);
         log.info("User {} has been unbanned", user.getId());
-        return user;
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .registrationDate(user.getRegistrationDate())
+                .country(user.getCountry())
+                .roles(user.getRoles())
+                .accountStatus(user.getAccountStatus())
+                .build();
     }
 
     public void deleteUser(Long id) {

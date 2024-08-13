@@ -45,8 +45,7 @@ public class AdminController {
 
     @PutMapping("/user/ban/{id}")
     public ResponseEntity<?> banUser(@PathVariable Long id) {
-        User user = adminService.banUser(id);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(adminService.banUser(id));
     }
 
     @PutMapping("/user/unban/{id}")
