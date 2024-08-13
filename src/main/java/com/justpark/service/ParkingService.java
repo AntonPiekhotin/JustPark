@@ -55,7 +55,6 @@ public class ParkingService {
                 .toList();
     }
 
-
     public ParkingDto getParkingById(Long parkingId, String token) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
@@ -91,6 +90,7 @@ public class ParkingService {
         parkingRepository.save(parking);
         return ParkingDto.builder()
                 .id(parking.getId())
+                .ownerId(parking.getOwner().getId())
                 .title(parking.getTitle())
                 .address(parking.getAddress())
                 .city(parking.getCity())
