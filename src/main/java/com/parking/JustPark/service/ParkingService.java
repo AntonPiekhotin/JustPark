@@ -61,7 +61,6 @@ public class ParkingService {
                 .title(parking.getTitle())
                 .address(parking.getAddress())
                 .city(parking.getCity())
-                .ratings(parking.getRatings())
                 .pricePerHour(parking.getPricePerHour())
                 .build();
     }
@@ -85,7 +84,6 @@ public class ParkingService {
                 .title(parking.getTitle())
                 .address(parking.getAddress())
                 .city(parking.getCity())
-                .ratings(parking.getRatings())
                 .pricePerHour(parking.getPricePerHour())
                 .build();
     }

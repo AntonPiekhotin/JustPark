@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ParkingRepository extends JpaRepository<Parking, Long> {
-    public List<Parking> findAllByOwner(User owner);
+    List<Parking> findAllByOwner(User owner);
     Optional<Parking> findById(Long id);
-    public boolean existsByOwner(User owner);
-
-    public Optional<List<Parking>> findAllByCity(String city);
+    List<Parking> findAllByOwnerId(Long ownerId);
 }
