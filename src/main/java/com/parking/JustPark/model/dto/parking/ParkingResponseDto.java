@@ -1,4 +1,4 @@
-package com.parking.JustPark.model.dto;
+package com.parking.JustPark.model.dto.parking;
 
 import com.parking.JustPark.model.entity.ParkingLot;
 import com.parking.JustPark.model.entity.ParkingRating;

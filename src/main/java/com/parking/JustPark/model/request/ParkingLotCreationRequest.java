@@ -1,6 +1,6 @@
 package com.parking.JustPark.model.request;
 
-import com.parking.JustPark.model.dto.ParkingLotCreationDto;
+import com.parking.JustPark.model.dto.parkingLot.ParkingLotCreationDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

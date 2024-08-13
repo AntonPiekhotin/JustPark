@@ -1,4 +1,4 @@
-package com.parking.JustPark.model.dto;
+package com.parking.JustPark.model.dto.user;
 
 import com.parking.JustPark.model.constant.AccountStatus;
 import com.parking.JustPark.model.constant.Role;

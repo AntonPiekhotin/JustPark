@@ -1,4 +1,4 @@
-package com.parking.JustPark.model.dto;
+package com.parking.JustPark.model.dto.parkingLot;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

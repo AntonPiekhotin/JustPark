@@ -1,18 +1,19 @@
-package com.parking.JustPark.model.dto;
+package com.parking.JustPark.model.dto.parking;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
 @AllArgsConstructor
-public class ParkingCreationDto {
+public class UpdateParkingDto {
 
     @NotBlank(message = "Title is required")
     @Size(max = 100, message = "Title is too long")
@@ -25,4 +26,6 @@ public class ParkingCreationDto {
     @NotBlank(message = "City is required")
     @Size(max = 100, message = "City is too long")
     String city;
+
+    BigDecimal pricePerHour;
 }

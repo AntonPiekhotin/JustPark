@@ -1,7 +1,11 @@
 package com.parking.JustPark.controller;
 
 import com.parking.JustPark.exception.ResponseErrorDto;
-import com.parking.JustPark.model.dto.*;
+import com.parking.JustPark.model.dto.parking.ParkingCreationDto;
+import com.parking.JustPark.model.dto.parking.ParkingDto;
+import com.parking.JustPark.model.dto.parking.ParkingResponseDto;
+import com.parking.JustPark.model.dto.parking.UpdateParkingDto;
+import com.parking.JustPark.model.dto.parkingLot.ParkingLotResponseDto;
 import com.parking.JustPark.model.request.ParkingLotCreationRequest;
 import com.parking.JustPark.service.ParkingLotService;
 import com.parking.JustPark.service.ParkingService;

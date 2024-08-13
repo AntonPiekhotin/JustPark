@@ -1,9 +1,9 @@
 package com.parking.JustPark.controller;
 
-import com.parking.JustPark.model.dto.LoginResponseDto;
-import com.parking.JustPark.model.dto.LoginUserDto;
-import com.parking.JustPark.model.dto.RegisterResponseDto;
-import com.parking.JustPark.model.dto.RegisterUserDto;
+import com.parking.JustPark.model.dto.user.LoginResponseDto;
+import com.parking.JustPark.model.dto.user.LoginUserDto;
+import com.parking.JustPark.model.dto.user.RegisterResponseDto;
+import com.parking.JustPark.model.dto.user.RegisterUserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.service.security.jwt.AuthenticationService;
 import com.parking.JustPark.service.security.jwt.JwtService;

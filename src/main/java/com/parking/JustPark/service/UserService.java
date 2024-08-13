@@ -1,6 +1,6 @@
 package com.parking.JustPark.service;
 
-import com.parking.JustPark.model.dto.UpdateUserDto;
+import com.parking.JustPark.model.dto.user.UpdateUserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.repository.UserRepository;
 import com.parking.JustPark.service.security.jwt.JwtService;

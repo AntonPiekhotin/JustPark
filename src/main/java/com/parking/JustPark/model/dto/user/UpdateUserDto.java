@@ -1,4 +1,4 @@
-package com.parking.JustPark.model.dto;
+package com.parking.JustPark.model.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

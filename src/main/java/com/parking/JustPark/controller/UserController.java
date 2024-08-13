@@ -1,7 +1,7 @@
 package com.parking.JustPark.controller;
 
-import com.parking.JustPark.model.dto.UpdateUserDto;
-import com.parking.JustPark.model.dto.UserDto;
+import com.parking.JustPark.model.dto.user.UpdateUserDto;
+import com.parking.JustPark.model.dto.user.UserDto;
 import com.parking.JustPark.model.entity.User;
 import com.parking.JustPark.service.UserService;
 import jakarta.validation.Valid;

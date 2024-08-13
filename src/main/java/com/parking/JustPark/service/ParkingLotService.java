@@ -1,8 +1,8 @@
 package com.parking.JustPark.service;
 
 import com.parking.JustPark.exception.JustParkException;
-import com.parking.JustPark.model.dto.ParkingLotCreationDto;
-import com.parking.JustPark.model.dto.ParkingLotResponseDto;
+import com.parking.JustPark.model.dto.parkingLot.ParkingLotCreationDto;
+import com.parking.JustPark.model.dto.parkingLot.ParkingLotResponseDto;
 import com.parking.JustPark.model.entity.Parking;
 import com.parking.JustPark.model.entity.ParkingLot;
 import com.parking.JustPark.model.entity.User;

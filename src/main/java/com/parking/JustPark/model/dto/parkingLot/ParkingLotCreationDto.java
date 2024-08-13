@@ -1,4 +1,4 @@
-package com.parking.JustPark.model.dto;
+package com.parking.JustPark.model.dto.parkingLot;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
