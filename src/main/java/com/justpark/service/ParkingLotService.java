@@ -84,16 +84,14 @@ public class ParkingLotService {
             return null;
 
         List<ParkingLotResponseDto> parkingLotsResponse = new ArrayList<>();
-        parkingLots.forEach(parkingLot -> {
-            parkingLotsResponse.add(ParkingLotResponseDto.builder()
-                    .id(parkingLot.getId())
-                    .parkingId(parkingLot.getParking().getId())
-                    .title(parkingLot.getTitle())
-                    .layer(parkingLot.getLayer())
-                    .isEmpty(parkingLot.getIsEmpty())
-                    .build()
-            );
-        });
+        parkingLots.forEach(parkingLot -> parkingLotsResponse.add(ParkingLotResponseDto.builder()
+                .id(parkingLot.getId())
+                .parkingId(parkingLot.getParking().getId())
+                .title(parkingLot.getTitle())
+                .layer(parkingLot.getLayer())
+                .isEmpty(parkingLot.getIsEmpty())
+                .build()
+        ));
         return parkingLotsResponse;
     }
 
