@@ -12,10 +12,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Клас UserEntity репрезентує користувача - власника автопаркінгу
+ * Entity class that represents the user in the database.
  */
 @Entity
 @Table(name = "users")
