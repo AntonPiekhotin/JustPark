@@ -35,4 +35,5 @@ public class UserDto {
     Set<Role> roles;
 
     AccountStatus accountStatus;
+
 }

@@ -17,9 +17,15 @@ import java.util.List;
 public class ParkingResponseDto {
 
     String title;
+
     String address;
+
     String city;
+
     BigDecimal pricePerHour;
+
     List<ParkingLot> parkingLots;
+
     List<ParkingRating> ratings;
+
 }

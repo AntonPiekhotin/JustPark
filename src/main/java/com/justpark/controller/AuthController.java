@@ -56,50 +56,5 @@ public class AuthController {
         return ResponseEntity.ok(loginResponse);
     }
 
-//    @GetMapping("/export-users")
-//    public ResponseEntity<?> exportUsers() {
-//        return ResponseEntity.ok().body(userService.exportUsers());
-//    }
-//
-//    @PostMapping("/edit-user/{id}")
-//    public ResponseEntity<?> editUser(@RequestBody GuestInfoDto guestInfoDto, @PathVariable Long id) {
-//        if (guestInfoDto == null) {
-//            return ResponseEntity.badRequest().body("Invalid data");
-//        }
-//        if (userService.editUser(id, guestInfoDto)) {
-//            return ResponseEntity.ok().build();
-//        }
-//        return ResponseEntity.badRequest().body("Error while editing user");
-//    }
-//
-//    @GetMapping("/user/{id}")
-//    public ResponseEntity<?> getUserById(@PathVariable Long id) {
-//        if (id == null || id <= 0) {
-//            return ResponseEntity.badRequest().body("Invalid id");
-//        }
-//        if (!userService.existsById(id)) {
-//            return ResponseEntity.badRequest().body("User with this id not found");
-//        }
-//        return ResponseEntity.ok().body(userService.getUserInfoById(id));
-//    }
-//
-//    @GetMapping("/users")
-//    public ResponseEntity<?> getAllUsers() {
-//        return ResponseEntity.ok().body(userService.getAllUsers());
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-//        if (id == null || id <= 0) {
-//            return ResponseEntity.badRequest().body("Invalid id");
-//        }
-//        return ResponseEntity.ok().body(userService.deleteUserById(id));
-//    }
-//
-//    @GetMapping("/backup")
-//    public ResponseEntity<?> backup() {
-//        return ResponseEntity.ok().body(userService.backupDatabase());
-//    }
-
 }
 

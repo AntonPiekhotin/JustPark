@@ -17,4 +17,5 @@ public class ParkingLotCreationDto {
 
     @NotNull(message = "Layer cannot be null")
     Integer layer;
+
 }

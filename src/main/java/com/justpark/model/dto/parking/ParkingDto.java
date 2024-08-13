@@ -12,10 +12,17 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 public class ParkingDto {
+
     Long id;
+
     Long ownerId;
+
     String title;
+
     String address;
+
     String city;
+
     BigDecimal pricePerHour;
+
 }

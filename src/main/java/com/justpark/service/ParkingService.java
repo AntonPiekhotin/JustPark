@@ -53,7 +53,7 @@ public class ParkingService {
             return null;
         }
         User currentUser = getAuthenticatedUser(token);
-        if(!parking.getOwner().getId().equals(currentUser.getId())) {
+        if (!parking.getOwner().getId().equals(currentUser.getId())) {
             throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
         }
         return ParkingDto.builder()
@@ -71,7 +71,7 @@ public class ParkingService {
         if (parking == null) {
             return null;
         }
-        if(!parking.getOwner().getId().equals(currentUser.getId())) {
+        if (!parking.getOwner().getId().equals(currentUser.getId())) {
             throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
         }
         parking.setTitle(updateParkingDto.getTitle());
@@ -94,7 +94,7 @@ public class ParkingService {
         if (parking == null) {
             return false;
         }
-        if(!parking.getOwner().getId().equals(currentUser.getId())) {
+        if (!parking.getOwner().getId().equals(currentUser.getId())) {
             throw new JustParkException(NO_ACCESS_MESSAGE, HttpStatus.FORBIDDEN);
         }
         parkingRepository.delete(parking);

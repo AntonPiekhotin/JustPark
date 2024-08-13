@@ -10,9 +10,15 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 public class ParkingLotResponseDto {
+
     Long id;
+
     Long parkingId;
+
     String title;
+
     Integer layer;
+
     Boolean isEmpty;
+
 }

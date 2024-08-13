@@ -55,17 +55,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDto);
     }
 
-    @ExceptionHandler(value = UsernameNotFoundException.class)
-    public ResponseEntity<ResponseErrorDto> handleUserNotFoundException(UsernameNotFoundException ex) {
-        ResponseErrorDto errorDto = ResponseErrorDto.builder()
-                .time(LocalDateTime.now())
-                .statusCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()))
-                .errorMessage(List.of(ex.getMessage()))
-                .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
-                .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseErrorDto> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
@@ -105,17 +94,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getCode()).body(errorDto);
     }
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ResponseErrorDto> handleException(Exception ex) {
-        ResponseErrorDto errorDto = ResponseErrorDto.builder()
-                .time(LocalDateTime.now())
-                .statusCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-                .errorMessage(List.of(ex.getMessage()))
-                .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
-    }
-
     @ExceptionHandler(value = DisabledException.class)
     public ResponseEntity<ResponseErrorDto> handleDisabledException(DisabledException ex) {
         ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -125,5 +103,16 @@ public class GlobalExceptionHandler {
                 .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ResponseErrorDto> handleException(Exception ex) {
+        ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                .time(LocalDateTime.now())
+                .statusCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                .errorMessage(List.of(ex.getMessage()))
+                .stackTrace(List.of(Arrays.toString(ex.getStackTrace())))
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
     }
 }

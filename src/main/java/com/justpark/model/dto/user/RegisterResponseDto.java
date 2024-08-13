@@ -31,4 +31,5 @@ public class RegisterResponseDto {
     String country;
 
     AccountStatus accountStatus;
+
 }

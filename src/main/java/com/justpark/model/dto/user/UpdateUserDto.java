@@ -29,4 +29,5 @@ public class UpdateUserDto {
 
     @NotBlank(message = "country is mandatory")
     String country;
+
 }

@@ -38,4 +38,5 @@ public class Parking {
 
     @Column(name = "price_per_hour")
     BigDecimal pricePerHour;
+
 }

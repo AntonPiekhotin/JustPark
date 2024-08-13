@@ -21,4 +21,5 @@ public class LoginUserDto {
 
     @NotBlank(message = "Password should not be null or blank")
     String password;
+
 }
