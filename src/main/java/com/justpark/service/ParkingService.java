@@ -28,7 +28,7 @@ public class ParkingService {
         return userService.getAuthenticatedUser(token);
     }
 
-    public void createParking(ParkingCreationDto parkingDto, String token) {
+    public Parking createParking(ParkingCreationDto parkingDto, String token) {
         User currentUser = getAuthenticatedUser(token);
         Parking parking = Parking.builder()
                 .title(parkingDto.getTitle())
@@ -37,6 +37,7 @@ public class ParkingService {
                 .owner(currentUser)
                 .build();
         parkingRepository.save(parking);
+        return parking;
     }
 
     public List<Parking> getMyParkings(String token) {

@@ -3,9 +3,10 @@ package com.justpark.controller;
 import com.justpark.exception.ResponseErrorDto;
 import com.justpark.model.dto.parking.ParkingCreationDto;
 import com.justpark.model.dto.parking.ParkingDto;
-import com.justpark.model.dto.parking.ParkingResponseDto;
+import com.justpark.model.dto.parking.ParkingCreationResponseDto;
 import com.justpark.model.dto.parking.UpdateParkingDto;
 import com.justpark.model.dto.parkingLot.ParkingLotResponseDto;
+import com.justpark.model.entity.Parking;
 import com.justpark.model.request.ParkingLotCreationRequest;
 import com.justpark.service.ParkingLotService;
 import com.justpark.service.ParkingService;
@@ -30,11 +31,12 @@ public class ParkingController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createParking(@Valid @RequestBody ParkingCreationDto parkingDto, @RequestHeader("Authorization") String token) {
-        parkingService.createParking(parkingDto, token);
-        ParkingResponseDto parkingToReturn = ParkingResponseDto.builder()
-                .title(parkingDto.getTitle())
-                .address(parkingDto.getAddress())
-                .city(parkingDto.getCity())
+        Parking parking = parkingService.createParking(parkingDto, token);
+        ParkingCreationResponseDto parkingToReturn = ParkingCreationResponseDto.builder()
+                .id(parking.getId())
+                .title(parking.getTitle())
+                .address(parking.getAddress())
+                .city(parking.getCity())
                 .build();
         return ResponseEntity.ok(parkingToReturn);
     }
