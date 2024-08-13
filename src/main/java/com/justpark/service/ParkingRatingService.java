@@ -6,7 +6,6 @@ import com.justpark.repository.ParkingRatingRepository;
 import com.justpark.repository.ParkingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,25 +39,18 @@ public class ParkingRatingService {
      * @param parkingId ідентифікатор паркінгу, рейтинг якого треба обрахувати.
      * @return середнє значення всіх оцінок паркінгу.
      */
-    public int getRatingByParking(Long parkingId) {
+    public Double getRatingByParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
             log.info("Error occurred while getting rating in parking {}", parkingId);
-            return -1;
+            return -1.0;
         }
         if (!parkingRatingRepository.existsByParking(parking)) {
-            return 0;
+            return 0.0;
         }
-        List<ParkingRating> ratings = parkingRatingRepository.findAllByParking(parking);
-        List<Integer> ratingValues = ratings.stream()
-                .map(ParkingRating::getRatingNumber)
-                .toList();
-        int finalRating = 0;
-        if (!ratingValues.isEmpty()) {
-            for (Integer ratingValue : ratingValues) {
-                finalRating += ratingValue;
-            }
-        }
-        return finalRating / ratingValues.size();
+        return parkingRatingRepository.findAllByParking(parking).stream()
+                .mapToInt(ParkingRating::getRatingNumber)
+                .average()
+                .orElse(0.0);
     }
 }
