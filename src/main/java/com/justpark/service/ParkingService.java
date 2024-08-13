@@ -40,11 +40,19 @@ public class ParkingService {
         return parking;
     }
 
-    public List<Parking> getMyParkings(String token) {
+    public List<ParkingDto> getMyParkings(String token) {
         User currentUser = getAuthenticatedUser(token);
-        List<Parking> parkings = parkingRepository.findAllByOwner(currentUser);
-        parkings.forEach(parking -> parking.setOwner(null));
-        return parkings;
+
+        return parkingRepository.findAllByOwner(currentUser).stream()
+                .map(parking -> ParkingDto.builder()
+                        .id(parking.getId())
+                        .ownerId(parking.getOwner().getId())
+                        .title(parking.getTitle())
+                        .address(parking.getAddress())
+                        .city(parking.getCity())
+                        .pricePerHour(parking.getPricePerHour())
+                        .build())
+                .toList();
     }
 
 
@@ -59,6 +67,7 @@ public class ParkingService {
         }
         return ParkingDto.builder()
                 .id(parking.getId())
+                .ownerId(parking.getOwner().getId())
                 .title(parking.getTitle())
                 .address(parking.getAddress())
                 .city(parking.getCity())
