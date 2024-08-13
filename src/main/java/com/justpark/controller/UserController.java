@@ -23,12 +23,16 @@ public class UserController {
     public ResponseEntity<?> getMyInfo(@RequestHeader("Authorization") String token) {
         User user = userService.getAuthenticatedUser(token);
         UserDto userToReturn = UserDto.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .lastName(user.getLastName())
                 .firstName(user.getFirstName())
                 .phoneNumber(user.getPhoneNumber())
                 .country(user.getCountry())
                 .registrationDate(user.getRegistrationDate())
+                .roles(user.getRoles())
+                .accountStatus(user.getAccountStatus())
+                .dateOfBirth(user.getDateOfBirth())
                 .build();
         return ResponseEntity.ok(userToReturn);
     }
@@ -38,6 +42,7 @@ public class UserController {
         User user = userService.getAuthenticatedUser(token);
         User updatedUser = userService.updateUser(user, updateUserDto);
         UserDto userToReturn = UserDto.builder()
+                .id(updatedUser.getId())
                 .email(updatedUser.getEmail())
                 .lastName(updatedUser.getLastName())
                 .firstName(updatedUser.getFirstName())
@@ -45,6 +50,8 @@ public class UserController {
                 .country(updatedUser.getCountry())
                 .dateOfBirth(updatedUser.getDateOfBirth())
                 .registrationDate(updatedUser.getRegistrationDate())
+                .roles(updatedUser.getRoles())
+                .accountStatus(updatedUser.getAccountStatus())
                 .build();
         return ResponseEntity.ok(userToReturn);
     }
