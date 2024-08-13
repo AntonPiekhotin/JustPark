@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-  # Postgres database for house-microservice
   db1:
     image: bitnami/postgresql:16.1.0-debian-11-r25
     container_name: justpark-db
