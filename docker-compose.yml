@@ -1,25 +1,24 @@
 version: "3.9"
 
 services:
-  db1:
+  db:
     image: bitnami/postgresql:16.1.0-debian-11-r25
     container_name: justpark-db
-    volumes:
-      - pg_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: justpark-db
     ports:
       - "5432:5432"
-    networks:
-      - postgres-db-network
 
-networks:
-  postgres-db-network:
-    driver: bridge
-
-volumes:
-  pg_data:
-    driver: local
-  postgres-data2:
+  app:
+    image: kartosha/justpark:latest
+    container_name: justpark-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/justpark-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
