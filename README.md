@@ -19,6 +19,20 @@ We offer robust features for authentication, parking management, and data persis
 - [Docker](https://www.docker.com/) - Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.
 - [Postman](https://www.postman.com/) - Postman is a collaboration platform for API development. Postman's features simplify each step of building an API and streamline collaboration so you can create better APIs faster.
 
+## Features
+#### Security
+- JWT tokens are used for authentication and authorization.
+- Passwords are hashed using BCryptPasswordEncoder.
+
+#### Parking Management
+Users can manage information about parkings and parking lots in them, edit such information as name, location, pricing, get rating of the parking.
+
+#### Data Persistence
+Data is stored in a PostgreSQL database. The database schema is created automatically by Hibernate.
+
+## Installation
+
+
 ## CI/CD
 
 GitHub Actions is used for CI/CD. The workflow is defined in `.github/workflows/cicd.yml` file. There are 2 steps in the workflow:
