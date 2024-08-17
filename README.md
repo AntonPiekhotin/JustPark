@@ -5,7 +5,7 @@ We offer robust features for authentication, parking management, and data persis
 - [Technology Stack](#technology-stack) 
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
+- [CI/CD](#cicd)
 
 
 ## Technology Stack
@@ -23,6 +23,7 @@ We offer robust features for authentication, parking management, and data persis
 #### Security
 - JWT tokens are used for authentication and authorization.
 - Passwords are hashed using BCryptPasswordEncoder.
+- Application checks if requested resources are accessible by the user.
 
 #### Parking Management
 Users can manage information about parkings and parking lots in them, edit such information as name, location, pricing, get rating of the parking.
@@ -30,8 +31,30 @@ Users can manage information about parkings and parking lots in them, edit such 
 #### Data Persistence
 Data is stored in a PostgreSQL database. The database schema is created automatically by Hibernate.
 
-## Installation
+#### Roles
+There are 2 roles in the system: USER and ADMIN. Users can create and manage their parkings, while admins can manage all application entities.
 
+## Installation
+You need to have **Java 17** and **Maven** installed on your machine to run the project. You also need to have **Docker** installed to run application and database in a docker container.
+Project has ***docker-compose*** file that allows you to run the project and the database in docker containers.   
+To run the project, follow the steps below:
+1. Clone the repository with command:
+```shell
+git clone https://github.com/AntonPiekhotin/JustPark
+```
+2. Navigate to the project directory
+3. Run the following command to build the project:
+```shell
+mvnw clean package
+```
+4. Start your **Docker engine** and run the following command:
+```shell
+docker-compose up
+```
+
+### Postman
+Postman collection is available. You can import it to your Postman to test Application endpoints by clicking the button below:  
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/29382454-5eef958a-9c95-4cd6-87a0-757afdad9347?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D29382454-5eef958a-9c95-4cd6-87a0-757afdad9347%26entityType%3Dcollection%26workspaceId%3Db6d90565-88d8-4914-a8f7-abd216f043af)
 
 ## CI/CD
 
@@ -39,6 +62,3 @@ GitHub Actions is used for CI/CD. The workflow is defined in `.github/workflows/
 - Building the project and running tests
 - Creating a docker image and pushing it to the [Docker Hub](https://hub.docker.com/r/kartosha/justpark)
 
-## Postman
-Postman collection is available. You can import it to your Postman app by clicking the button below:  
-[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/29382454-5eef958a-9c95-4cd6-87a0-757afdad9347?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D29382454-5eef958a-9c95-4cd6-87a0-757afdad9347%26entityType%3Dcollection%26workspaceId%3Db6d90565-88d8-4914-a8f7-abd216f043af)
