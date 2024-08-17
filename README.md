@@ -62,3 +62,5 @@ GitHub Actions is used for CI/CD. The workflow is defined in `.github/workflows/
 - Building the project and running tests
 - Creating a docker image and pushing it to the [Docker Hub](https://hub.docker.com/r/kartosha/justpark)
 
+## License
+This project is licensed under the MIT License, you can feel free to use this project for any purpose.
