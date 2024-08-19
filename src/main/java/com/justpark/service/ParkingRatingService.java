@@ -18,12 +18,6 @@ public class ParkingRatingService {
     private final ParkingRatingRepository parkingRatingRepository;
     private final ParkingRepository parkingRepository;
 
-    /**
-     * Метод повертає всі оцінки по надаому паркінгу.
-     *
-     * @param parkingId ідентифікатор паркінгу, оцінки якого треба знайти.
-     * @return список оцінок.
-     */
     public List<ParkingRating> listOfRatingsByParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
@@ -33,12 +27,6 @@ public class ParkingRatingService {
         return parkingRatingRepository.findAllByParking(parking);
     }
 
-    /**
-     * Метод підраховує рейтинг паркінгу шляхом знаходження середнього значення всіх оцінок цього паркінгу.
-     *
-     * @param parkingId ідентифікатор паркінгу, рейтинг якого треба обрахувати.
-     * @return середнє значення всіх оцінок паркінгу.
-     */
     public Double getRatingByParking(Long parkingId) {
         Parking parking = parkingRepository.findById(parkingId).orElse(null);
         if (parking == null) {
