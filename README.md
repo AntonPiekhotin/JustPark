@@ -20,21 +20,21 @@ We offer robust features for authentication, parking management, and data persis
 - [Postman](https://www.postman.com/) - Postman is a collaboration platform for API development. Postman's features simplify each step of building an API and streamline collaboration so you can create better APIs faster.
 
 ## Features
-#### Security
+#### 🔒Security
 - JWT tokens are used for authentication and authorization.
 - Passwords are hashed using BCryptPasswordEncoder.
 - Application checks if requested resources are accessible by the user.
 
-#### Parking Management
+#### 🚗Parking Management
 Users can manage information about parkings and parking lots in them, edit such information as name, location, pricing, get rating of the parking.
 
-#### Data Persistence
+#### 📂Data Persistence
 Data is stored in a PostgreSQL database. The database schema is created automatically by Hibernate.
 
-#### Validation
+#### ✅Validation
 Validation is performed on the server side using Jakarta Validation. The application checks if the data is valid before doing any operations.
 
-#### Roles
+#### 🎭Roles
 There are 2 roles in the system: USER and ADMIN. Users can create and manage their parkings, while admins can manage all application entities.
 
 ## Installation
@@ -50,7 +50,7 @@ git clone https://github.com/AntonPiekhotin/JustPark
 ```shell
 mvnw clean package
 ```
-4. Start your **Docker engine** and run the following command:
+4. Start your **Docker engine**🐳 and run the following command:
 ```shell
 docker-compose up
 ```
